@@ -30,6 +30,12 @@ CONTENT = {
         "button_text_despair": "Surprise me",
     },
     
+    "step3": {
+        "step_number": 3,
+        "title": "Start the ritual",
+        "button_text": "Fingerprint",
+    },
+    
     "result": {
         "title_prefix": "✨ Your Fortune, ",
         "title_suffix": " ✨",
@@ -54,9 +60,7 @@ CONTENT = {
     # Guidance path
     "guidanceStep1": {
         "step_number": 1,
-        "field_label": "What guidance do you seek?",
-        "field_placeholder": "Tell me...",
-        "button_text": "Continue",
+        "field_label": "Are you enlightened?",
     },
     
     "guidanceStep2": {
@@ -84,9 +88,7 @@ CONTENT = {
     # Surprise path
     "surpriseStep1": {
         "step_number": 1,
-        "field_label": "Open your mind to the unexpected...",
-        "field_placeholder": "Tell me...",
-        "button_text": "Continue",
+        "field_label": "Do you have any pets?",
     },
     
     "surpriseStep2": {

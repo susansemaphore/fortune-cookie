@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <form class="cloud form-row" method="post" action="{{ url_for('loveStep2') }}">
+  <form class="cloud form-row" method="post" action="{{ url_for('step3') }}">
     <label class="field">
       <span>{{ content.field_label }}</span>
       <input type="text" name="love_question" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />

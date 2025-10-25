@@ -25,6 +25,13 @@ def step2():
     content = get_content("step2")
     return render_template("step2.html", content=content)
 
+@app.post("/step3")
+def step3():
+    # Store any answers from the category-specific Step1 pages
+    session['category_answer'] = request.form.get("love_answer") or request.form.get("guidance_answer") or request.form.get("fortune_answer") or request.form.get("surprise_answer")
+    content = get_content("step3")
+    return render_template("step3.html", content=content)
+
 @app.post("/fortune")
 def fortune():
     session['mood'] = request.form.get("mood", "")
