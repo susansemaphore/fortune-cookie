@@ -5,5 +5,79 @@
   <div class="centered-content">
     <a href="{{ url_for('step1') }}" class="btn">{{ content.button_text }}</a>
   </div>
+
+  <script>
+    // Play audio clips sequentially with 10-second delays after each clip finishes
+    document.addEventListener('DOMContentLoaded', function() {
+      const audioFiles = [
+        "{{ url_for('static', filename='audio/start/start1.wav') }}",
+        "{{ url_for('static', filename='audio/start/start2.wav') }}",
+        "{{ url_for('static', filename='audio/start/start3.wav') }}"
+      ];
+      
+      let currentIndex = 0;
+      let hasStartedPlaying = false;
+      const DELAY_BETWEEN_CLIPS = 15000; // 15 seconds in milliseconds
+      
+      function playNextAudio() {
+        const currentFile = audioFiles[currentIndex];
+        console.log(`[${new Date().toLocaleTimeString()}] Starting to play: ${currentFile}`);
+        const audio = new Audio(currentFile);
+        audio.volume = 1.0; // Set volume to maximum
+        
+        // When audio finishes playing, wait before playing the next one
+        audio.addEventListener('ended', function() {
+          console.log(`[${new Date().toLocaleTimeString()}] Audio finished: ${currentFile}`);
+          console.log(`Waiting ${DELAY_BETWEEN_CLIPS/1000} seconds before next clip...`);
+          
+          // Move to next audio, loop back to start if at the end
+          currentIndex++;
+          if (currentIndex >= audioFiles.length) {
+            currentIndex = 0; // Loop back to the first audio
+          }
+          
+          // Wait before playing the next audio
+          setTimeout(playNextAudio, DELAY_BETWEEN_CLIPS);
+        });
+        
+        audio.play()
+          .then(() => {
+            console.log(`[${new Date().toLocaleTimeString()}] Audio is now playing: ${currentFile}`);
+            hasStartedPlaying = true;
+          })
+          .catch(error => {
+            console.error('Audio playback failed:', error);
+            console.log('Click anywhere on the page to enable audio');
+            
+            // If playback fails, still try to move to next after delay
+            currentIndex++;
+            if (currentIndex >= audioFiles.length) {
+              currentIndex = 0;
+            }
+            setTimeout(playNextAudio, DELAY_BETWEEN_CLIPS);
+          });
+      }
+      
+      // Try to start playing immediately
+      playNextAudio();
+      
+      // If autoplay fails, play on first user interaction
+      function startAudioOnInteraction() {
+        if (!hasStartedPlaying) {
+          console.log('Starting audio after user interaction');
+          currentIndex = 0; // Reset to start
+          playNextAudio();
+        }
+        // Remove listeners after first interaction
+        document.removeEventListener('click', startAudioOnInteraction);
+        document.removeEventListener('touchstart', startAudioOnInteraction);
+        document.removeEventListener('keydown', startAudioOnInteraction);
+      }
+      
+      document.addEventListener('click', startAudioOnInteraction);
+      document.addEventListener('touchstart', startAudioOnInteraction);
+      document.addEventListener('keydown', startAudioOnInteraction);
+    });
+  </script>
 {% endblock %}
 

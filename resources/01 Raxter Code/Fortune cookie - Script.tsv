@@ -1,0 +1,94 @@
+String	Context:	text:	define:	Step:	Phase:	Input	Output	Cookie Prompt	Screen Prompt
+sc_01	screen promt to start game	Touch to summon The Great Cookie		1	Idle	session ends			
+cook_01A	Cookie welcomes	Welcome dreamer!		2	Initialize	Player touch the screen	* Curtains open  * cookie welcomes players 	"Tell me your name."	Type your name
+cook_01B	"	Salutations seeker of knowledge!		3	pick category	Player types name	* Curtains open  * cookie welcomes players 	"Why have you come to The Great Cookie?"	1. Love 2. Guidance 3. Fortune 4. Surprise Me
+cook_01C	"	The Great Cookie Sits before you!		4	Pose question	type number on keyboard	Cookie acknowledges your choice. 1.  2. Guidance? You have come to the right place! 3. Fortune? That's my middle name! 4. Very well! Surprised you will be!	Cookie_AB_question	ab question displayed
+cook_02A	cookie asks for player name	What is your name?		5	Get details	type answer	Cookie "I see"	"Hold your hand to the sigil to start the ritual."	shows sigil
+cook_02B	"	Tell the great Cookie what to call you!		6	Start ritual	Player touches screen	Lights dim. Candles turn on. Crystal ball glows. Smoke bellows.  Cookie chants.		
+cook_02C	"	Reveal to me thy name, seeker of truths!		7	Give fortune		Player fortune prints.		"take your fortune".
+cook_02D	"	What do they call thee in this realm?		8	Wind down		Cookie "Thank you for visiting the great Cookie." Curtains close		
+cook_02E	"	Say your name, say your name!							
+sc_02	screen asks for name	Enter Your Name	playername = []						
+cook_03A	cookie asks for subject	Tell me, why have the stars guided you to The Great Cookie?							
+cook_03B	"	What brings you to my mystical gaze?							
+cook_03C	"	Why dost thou seek me, traveler? What do you wish to learn?							
+cook_03D	"	What is it that has drawn you here, to The Great Cookie?							
+cook_03E	"	The fates have brought you to me - what is the secret you wish to unveil?							
+sc_03	screen asks for subject	1. Love 2. Fortune 3. Wisdom 4. Surprise Me	subject = 1/2/3/4						
+cook_04_love_A	cookie responds to love selected	Love... a force more ancient than the stars themselves.							
+cook_04_love_B	"	Love? The Great Cookie is a master in matters of the heart.							
+cook_04_fortune_A	cookie responds to fortune selected	Fortune? That's my middle name!							
+cook_04_fortune_B	"	Ah, fortune... a coin tossed into the winds of destiny.							
+cook_04_wisdom_A	cookie responds to wisdom selected	To possess wisdom is to know that there is always more to learn.							
+cook_04_fortune_B	"	Wisdom, like the wind, cannot be seen, only felt.							
+cook_04_surprise_A	cookie responds to "surprise me" selected	Ah, to ask for a surprise! The very essence of the unknown, where the realms of possibility stretch wide before us!					"Ah, a wish for surprise? A curious request, indeed! The stars align in ways most unexpected, and what will unfold, none can predict."		
+cook_04_surprise_B	"	A surprise, you say? Prepare yourself, for the winds of fate shift at this very moment!"					"Surprise... the universe’s favorite game!		
+cook_05_love	cookie asks a question related to love AB	Do you have a love in your life? Or do you still search for someone that will capture your heart?					"A request for surprise? I shall grant it! You stand upon the threshold of the unknown—let the unexpected unfold before you!"		
+sc_05_love	screen prompts player about love AB	Do you have a love interest?       \n A. I have feelings for someone       \n B. I am searching for someone special\n	loveAB = 1/2				"Surprise! It is the gift the universe delights in giving!		
+cook_05_fortune	cookie asks a question related to fortune	Do you consider yourself lucky?					The very act of surprise is woven into the fabric of time itself. You may not know what awaits, but I assure you, it will be most... memorable.		
+sc_05_fortune	screen prompts player about fortune AB	Do you feel lucky punk? A. I am as lucky as a four-leaf clover. B. I'm cursed.	fortuneAB = 1/2						
+cook_05_wisdom	cookie asks a question related to wisdom	Do you consider yourself enlightened?							
+sc_05_wisdom	screen prompts player about wisdom AB	Are you enlightened? A. I am a sage. B. I am still a student.	wisdomAB = 1/2						
+cook_05_surprise	cookie asks a question related to fortune	Is there an animal companion that walks this mortal journey with you?							
+sc_05_surprise	screen prompts player about surprise AB	Do you have any pets? 1. I have a pet.  2. I'm petless.	surpriseAB = 1/2						
+cook_06_love_A	cookie asks about love interest	Then you are greatly blessed!  What is it about this person that makes your heart race?							
+sc_06_love_A	screen asks player about their love	What is your favourite feature of your love? My favourite thing about my crush is their ...	lovefeature = []						
+cook_06_love_B	cookie asks about what they seek	Someone searches for you as you search for them!\n What quality is most important to you in a potential match?							
+sc_06_love_B	screen asks player about what they seek	Name the feature that you look for in a partner:\n I'm looking for someone with ...							
+cook_06_fortune_A		How glorious to be so blessed by The Cosmos!  What is the source of all your good fortune?							
+sc_06_fortune_A		What is it that makes you so lucky? My luck comes from my ...							
+cook_06_fortune_B		Every season must come to an end.  What omen would convince you the curse was broken?							
+sc_06_fortune_B		What omen would convince you the curse was broken? I would know the curse was broken if I saw a ...							
+cook_06_wisdom_A		I'm honoured to meet another enlightened master!  How did you grow to be so wise?							
+sc_06_wisdom_A		How did you grow to be so wise? I became wise through ...							
+cook_06_wisdom_B		The only path to wisdom is to be an eternal student of The Cosmos. What has your greatest teacher been?							
+sc_06_wisdom_B		What has your greatest teacher been? I gain wisdom from ...							
+cook_06_surprise_A		Happy is the human who has a loving creature to call their friend! What is your companions name?							
+sc_06_surprise_A		What is your pets name? My pets name is ...							
+cook_06_surprise_B		Though you have no animal familiar you are not alone.							
+sc_06_surprise_B		What manner of beast do you most love? My favourite animal is a ...							
+cook_07	cookie wraps up question time	Thank you for speaking the truth. Now, let us begin!							
+sc_07		start the ritual							
+cook_08	cookie does his ritual	*cookie chants incoherently*							
+cook_09A	Cookie prompts player to take fortune	Your trajectory is crystal clear. Take your fortune!					"Ah, yes—, clear and unimpeded. The winds of fortune shall guide your sails, my friend. The journey is yours, but fortune will walk beside you."		
+cook_09B	"	Your fortune is clear as the shimmering stars above! Take it in your hands!					"The trajectory of your fate is set, and the. Fortune is yours to claim—seize it with the strength of your will!"		
+cook_09C	"	Take your fortune and go forth with confidence! The stars themselves smile upon you!					"Destiny is but a thread, and your hand weaves it with skill. The future is bright, and fortune, like a gentle breeze, will carry you forward. Trust in your path, for it is clear."		
+cook_09D	"	Your future is like a river, flowing ever onward. Take my prediction!					"Your fortune is already in motion, rolling forward like a great wheel turning ever onward. Fear not, for your destiny is well-formed, and fortune will illuminate the way."		
+cook_09E	"	My crystal ball reflects a future bright with promise! Accept your fortune!					The path is clear indeed, and fortune waits to unfold before you. Take it, with courage, for the world is yours to conquer!		
+sc_09		Take your fortune.							
+fortune_love_A_A		[PLAYER_NAME] Fortune smiles upon you! You will walk beside a kind soul with a glorious [lovefeature].							
+fortune_love_A_B		Oh [PLAYER_NAME], lover of someone with a majestic [lovefeature], I see many happy moons ahead of you!							
+fortune_love_A_C		Blessed [PLAYER_NAME], your affinity for someone with a [lovefeature] will be a true gift to you.							
+fortune_love_A_D		Sweet [PLAYER_NAME]. I forsee you spending many happy moments with someone that has a [lovefeature].							
+fortune_love_B_A		[PLAYER_NAME] Keep your eyes open, for someone with a wonderful [lovefeature] will soon cross your path.							
+fortune_love_B_B		Fortunate [PLAYER_NAME], a sweet soul with [lovefeature] most sweet lies in your future.							
+fortune_love_B_C		Rejoice [PLAYER_NAME] - someone special comes your way, and they are blessed in the [lovefeature] department!							
+fortune_love_B_D		My dear [PLAYER_NAME], your days as a lone wolf are waning, as soon you will walk beside someone [lovefeature] most glorious.							
+fortune_fortune_A_A		Most lucky [PLAYER_NAME], your good fortune will continue for many moons! Go forth and share your [fortunefeature] with others!							
+fortune_fortune_A_B		The stars have smiled upon you and your [fortunefeature] [PLAYER_NAME]! Be sure to smile upon all who cross your path today!							
+fortune_fortune_A_C		Oh [PLAYER_NAME], great blessings have been passed on to you by your [fortunefeature]! Many happy adventures lie before you!							
+fortune_fortune_A_D		By the power of [fortunefeature], the odds are forever in your favour [PLAYER_NAME]! Use your lucky to brighten the lives of one and all!							
+fortune_fortune_B_A		Sweet [player_name], the tides turn! A [fortunefeature] will soon present itself to you, and with it your luck will change!							
+fortune_fortune_B_B		Your path has been shrowded in shadow [PLAYER_NAME], but a [fortunefeature] will brighten your journey! Till then, When your way gets dark, baby, turn your lights up high!							
+fortune_fortune_B_C		Prepapre for a twist of fate [PLAYER_NAME]! Any day now a [fortunefeature] will cross your path and things will look up for you!							
+fortune_fortune_B_D		Hold tight [PLAYER_NAME]! Your luck is about to change! Your [fortunefeature] awaits!							
+fortune_wisdom_A_A									
+fortune_wisdom_A_B									
+fortune_wisdom_A_C									
+fortune_wisdom_A_D									
+fortune_wisdom_B_A									
+fortune_wisdom_B_B									
+fortune_wisdom_B_C									
+fortune_wisdom_B_D									
+fortune_surprise_A_A		[pet] chose wisely when they saw fit to make you their human! Your kindness and warmth will be a blessing to you always [PLAYER_NAME]!							
+fortune_surprise_A_B		The Great Baker has blessed you with many gifts, but [pet] may be the most special bun in your basket! Hold them close [PLAYER_NAME], and enjoy your good fortune!							
+fortune_surprise_A_C		With [pet] by your side your future will be most excellent [PLAYER_NAME]! Go forth and celebrate!							
+fortune_surprise_A_D		Blessed [PLAYER_NAME], companion to [pet], the stars of good shine brightly upon you! Rejoice, and share your good fortune with those you meet today!							
+fortune_surprise_B_A		Oh  [PLAYER_NAME], who has no pets but many blessings. A friendly [pet] will soon cross paths with you.							
+fortune_surprise_B_B		Praise The Great Baker  [PLAYER_NAME], for the oven of the Universe bakes the perfect [pet] just for you!							
+fortune_surprise_B_C		Your life will be blessed by visits from a [pet] again and again, oh lucky a wonderous  [PLAYER_NAME]!							
+fortune_surprise_B_D		You may find a cute ginger cat at the store across the road, or hope to see a [pet] sometime soon! The choice is your's  [PLAYER_NAME]!							
+cook_10A		The Great Cookie Thanks you for your visit! Now go forth an shine your light!							
+cook_10B		Your fortune delivered, my work here is done! Farewell curious soul!							
+cook_10C		The stars have spoken! Now it is time for me to return to the realm from wence I came!							
+cook_10D		That's that! Byyyyeeeee!							

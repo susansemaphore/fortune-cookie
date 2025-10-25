@@ -11,25 +11,45 @@
         folder: 'Love_Small_Unselected',
         frames: 4,
         fps: 6,
-        nextUrl: "{{ url_for('loveStep1') }}"
+        nextUrl: "{{ url_for('loveStep1') }}",
+        audioFolder: 'love',
+        audioFiles: [
+          "{{ url_for('static', filename='audio/love/cook_04_love_A.wav') }}",
+          "{{ url_for('static', filename='audio/love/cook_04_love_B.wav') }}"
+        ]
       },
       guidance: {
         folder: 'Guidance_Small_Unselected',
         frames: 18,
         fps: 6,
-        nextUrl: "{{ url_for('guidanceStep1') }}"
+        nextUrl: "{{ url_for('guidanceStep1') }}",
+        audioFolder: 'guidance',
+        audioFiles: [
+          "{{ url_for('static', filename='audio/guidance/cook_04_guidance_A.wav') }}",
+          "{{ url_for('static', filename='audio/guidance/cook_04_guidance_B.wav') }}"
+        ]
       },
       fortune: {
         folder: 'Fortune_Small_Unselected',
         frames: 9,
         fps: 6,
-        nextUrl: "{{ url_for('fortuneStep1') }}"
+        nextUrl: "{{ url_for('fortuneStep1') }}",
+        audioFolder: 'fortune',
+        audioFiles: [
+          "{{ url_for('static', filename='audio/fortune/cook_04_fortune_A.wav') }}",
+          "{{ url_for('static', filename='audio/fortune/cook_04_fortune_B.wav') }}"
+        ]
       },
       surprise: {
         folder: 'Surprise_Small_Unselected',
         frames: 12,
         fps: 6,
-        nextUrl: "{{ url_for('surpriseStep1') }}"
+        nextUrl: "{{ url_for('surpriseStep1') }}",
+        audioFolder: 'surprise',
+        audioFiles: [
+          "{{ url_for('static', filename='audio/surprise/cook_04_surprise_A.wav') }}",
+          "{{ url_for('static', filename='audio/surprise/cook_04_surprise_B.wav') }}"
+        ]
       }
     };
 
@@ -41,10 +61,29 @@
       window.location.href = "{{ url_for('step1') }}";
     }
 
+    // Play random audio for this category
+    if (config.audioFiles && config.audioFiles.length > 0) {
+      const randomIndex = Math.floor(Math.random() * config.audioFiles.length);
+      const selectedAudio = config.audioFiles[randomIndex];
+      
+      console.log(`[${new Date().toLocaleTimeString()}] Playing random ${category} audio: ${selectedAudio}`);
+      
+      const audio = new Audio(selectedAudio);
+      audio.volume = 1.0;
+      
+      audio.play()
+        .then(() => {
+          console.log('Animation audio playing successfully');
+        })
+        .catch(error => {
+          console.error('Animation audio playback failed:', error);
+        });
+    }
+
     let currentFrame = 0;
     const animImage = document.getElementById('animation-image');
     const frameDelay = 1000 / config.fps; // Convert FPS to milliseconds
-    const animationDuration = 3000; // 3 seconds in milliseconds
+    const animationDuration = 10000; // 10 seconds in milliseconds
     const startTime = Date.now();
 
     function padNumber(num) {

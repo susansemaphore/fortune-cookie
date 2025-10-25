@@ -27,7 +27,7 @@ Fortune Teller is an interactive multi-step form application that guides users t
 
 3. **Activate the virtual environment**
    ```bash
-   source venv/bin/activate
+   source .venv/bin/activate
    ```
    
    *You should see `(venv)` appear at the beginning of your terminal prompt.*
@@ -41,7 +41,7 @@ Fortune Teller is an interactive multi-step form application that guides users t
 
 1. **Activate your virtual environment** (if not already activated)
    ```bash
-   source venv/bin/activate
+   source .venv/bin/activate
    ```
 
 2. **Run the Flask application**
