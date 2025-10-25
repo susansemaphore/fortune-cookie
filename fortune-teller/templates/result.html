@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="title cloud">{{ content.title_prefix }}{{ name }}{{ content.title_suffix }}</h1>
+  <div class="card cloud">
+    {% for line in fortune.split('\n') %}
+      <p class="fortune-line">{{ line }}</p>
+    {% endfor %}
+  </div>
+  <a class="btn cloud" href="{{ url_for('index') }}">{{ content.button_text }}</a>
+{% endblock %}

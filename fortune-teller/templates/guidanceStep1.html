@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <form class="cloud form-row" method="post" action="{{ url_for('guidanceStep2') }}">
+    <label class="field">
+      <span>{{ content.field_label }}</span>
+      <input type="text" name="guidance_question" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
+    </label>
+    <button class="btn" type="submit">{{ content.button_text }}</button>
+  </form>
+{% endblock %}
+

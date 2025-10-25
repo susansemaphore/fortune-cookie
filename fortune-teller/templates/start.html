@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="title">{{ content.title }}</h1>
+  <img src="{{ url_for('static', filename='images/Cookie.png') }}" alt="Cookie" class="cookie-image" />
+  <div class="centered-content">
+    <a href="{{ url_for('step1') }}" class="btn">{{ content.button_text }}</a>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="category-selection">
+    <h2 class="category-title">what brings you here:</h2>
+    <div class="category-buttons">
+      <form method="post" action="{{ url_for('show_animation', category='love') }}" class="category-form">
+        <button class="category-btn" type="submit">
+          <img src="{{ url_for('static', filename='images/UI Elements/Categories/Love_Small_Unselected/Love_Small_Unselected_00000.png') }}" alt="Love" class="category-icon" />
+          <span class="category-label">love</span>
+        </button>
+      </form>
+      <form method="post" action="{{ url_for('show_animation', category='guidance') }}" class="category-form">
+        <button class="category-btn" type="submit">
+          <img src="{{ url_for('static', filename='images/UI Elements/Categories/Guidance_Small_Unselected/Guidance_Small_Unselected_00003.png') }}" alt="Guidance" class="category-icon" />
+          <span class="category-label">guidance</span>
+        </button>
+      </form>
+      <form method="post" action="{{ url_for('show_animation', category='fortune') }}" class="category-form">
+        <button class="category-btn" type="submit">
+          <img src="{{ url_for('static', filename='images/UI Elements/Categories/Fortune_Small_Unselected/Fortune_Small_Unselected_00000.png') }}" alt="Fortune" class="category-icon" />
+          <span class="category-label">fortune</span>
+        </button>
+      </form>
+      <form method="post" action="{{ url_for('show_animation', category='surprise') }}" class="category-form">
+        <button class="category-btn" type="submit">
+          <img src="{{ url_for('static', filename='images/UI Elements/Categories/Surprise_Small_Unselected/Surprise_Small_Unselected_00006.png') }}" alt="Surprise" class="category-icon" />
+          <span class="category-label">surprise</span>
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <form class="cloud form-row" method="post" action="{{ url_for('fortune') }}">
+    <label class="field">
+      <span>{{ content.field_label }}</span>
+      <input type="text" name="love_detail" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
+    </label>
+  </form>
+{% endblock %}
+

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="animation-container">
+    <img id="animation-image" class="animation-image" src="" alt="{{ category }}" />
+  </div>
+
+  <script>
+    // Animation configuration
+    const animations = {
+      love: {
+        folder: 'Love_Small_Unselected',
+        frames: 4,
+        fps: 6,
+        nextUrl: "{{ url_for('loveStep1') }}"
+      },
+      guidance: {
+        folder: 'Guidance_Small_Unselected',
+        frames: 18,
+        fps: 6,
+        nextUrl: "{{ url_for('guidanceStep1') }}"
+      },
+      fortune: {
+        folder: 'Fortune_Small_Unselected',
+        frames: 9,
+        fps: 6,
+        nextUrl: "{{ url_for('fortuneStep1') }}"
+      },
+      surprise: {
+        folder: 'Surprise_Small_Unselected',
+        frames: 12,
+        fps: 6,
+        nextUrl: "{{ url_for('surpriseStep1') }}"
+      }
+    };
+
+    const category = "{{ category }}";
+    const config = animations[category];
+    
+    if (!config) {
+      console.error('Unknown category:', category);
+      window.location.href = "{{ url_for('step1') }}";
+    }
+
+    let currentFrame = 0;
+    const animImage = document.getElementById('animation-image');
+    const frameDelay = 1000 / config.fps; // Convert FPS to milliseconds
+    const animationDuration = 3000; // 3 seconds in milliseconds
+    const startTime = Date.now();
+
+    function padNumber(num) {
+      return String(num).padStart(5, '0');
+    }
+
+    function updateFrame() {
+      const framePath = `/static/images/UI Elements/Categories/${config.folder}/${config.folder}_${padNumber(currentFrame)}.png`;
+      animImage.src = framePath;
+      
+      currentFrame++;
+      
+      // Loop back to first frame if we reach the end
+      if (currentFrame >= config.frames) {
+        currentFrame = 0;
+      }
+      
+      // Check if 3 seconds have elapsed
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < animationDuration) {
+        setTimeout(updateFrame, frameDelay);
+      } else {
+        // Animation duration complete - redirect to next step
+        setTimeout(() => {
+          window.location.href = config.nextUrl;
+        }, 200); // Small delay before redirect
+      }
+    }
+
+    // Start animation when page loads
+    updateFrame();
+  </script>
+{% endblock %}
+
