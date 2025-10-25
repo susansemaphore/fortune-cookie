@@ -12,13 +12,6 @@ def index():
     content = get_content("start")
     return render_template("start.html", content=content)
 
-@app.get("/all-in-one")
-def all_in_one():
-    # Alternative all-in-one form page
-    session.clear()
-    content = get_content("index")
-    return render_template("index.html", content=content)
-
 @app.get("/step1")
 def step1():
     # Clear session and start the fortune telling flow
@@ -31,18 +24,6 @@ def step2():
     session['name'] = request.form.get("name", "")
     content = get_content("step2")
     return render_template("step2.html", content=content)
-
-@app.post("/step3")
-def step3():
-    session['birth_month'] = request.form.get("birth_month", "")
-    content = get_content("step3")
-    return render_template("step3.html", content=content)
-
-@app.post("/step4")
-def step4():
-    session['favorite_color'] = request.form.get("favorite_color", "")
-    content = get_content("step4")
-    return render_template("step4.html", content=content)
 
 @app.post("/fortune")
 def fortune():

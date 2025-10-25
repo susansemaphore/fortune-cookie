@@ -30,20 +30,6 @@ CONTENT = {
         "button_text_despair": "Surprise me",
     },
     
-    "step3": {
-        "step_number": 3,
-        "field_label": "Favourite color",
-        "field_placeholder": "Enter your favourite color...",
-        "button_text": "Reveal my fortune",
-    },
-    
-    "step4": {
-        "step_number": 4,
-        "field_label": "Your mood",
-        "field_placeholder": "Enter your mood...",
-        "button_text": "Reveal my fortune",
-    },
-    
     "result": {
         "title_prefix": "✨ Your Fortune, ",
         "title_suffix": " ✨",
@@ -109,36 +95,6 @@ CONTENT = {
         "field_placeholder": "Tell me...",
         "button_text": "Reveal my fortune",
     },
-    
-    # Alternative index page (all-in-one form)
-    "index": {
-        "title": f"{APP_ICON} Magic Fortune Cookie Teller",
-        "button_text": "Reveal my fortune",
-        "fields": {
-            "name": {
-                "label": "Initial",
-                "placeholder": "Choose...",
-            },
-            "birth_month": {
-                "label": "Birth month",
-                "placeholder": "Choose...",
-                "options": [
-                    "January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"
-                ]
-            },
-            "favorite_color": {
-                "label": "Favourite color",
-                "placeholder": "Choose...",
-                "options": ["Pink", "Blue", "Orange", "Green", "Red"]
-            },
-            "mood": {
-                "label": "Your mood",
-                "placeholder": "Choose...",
-                "options": ["Mad", "Glad", "Bad", "Sad"]
-            }
-        }
-    }
 }
 
 
