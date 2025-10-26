@@ -46,14 +46,9 @@ def step3():
 
 @app.post("/fingerprint-animation")
 def fingerprint_animation():
-    return render_template("fingerprint_animation.html")
-
-@app.get("/show-fortune")
-def show_fortune():
-    # Print data summary to console for debugging
+    # Send data to Arduino when user clicks "Fingerprint" button
     print_data_summary(session)
     
-    # Send data to Arduino
     arduino = get_arduino()
     if arduino and arduino.is_connected:
         user_data = get_user_data(session)
@@ -64,6 +59,10 @@ def show_fortune():
         if response:
             print(f"Arduino acknowledged: {response}")
     
+    return render_template("fingerprint_animation.html")
+
+@app.get("/show-fortune")
+def show_fortune():
     content = get_content("result")
     return render_template("result.html", content=content)
 
