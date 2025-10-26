@@ -32,6 +32,15 @@ def step3():
     content = get_content("step3")
     return render_template("step3.html", content=content)
 
+@app.post("/fingerprint-animation")
+def fingerprint_animation():
+    return render_template("fingerprint_animation.html")
+
+@app.get("/show-fortune")
+def show_fortune():
+    content = get_content("result")
+    return render_template("result.html", content=content)
+
 @app.post("/fortune")
 def fortune():
     session['mood'] = request.form.get("mood", "")

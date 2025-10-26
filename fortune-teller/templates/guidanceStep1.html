@@ -3,16 +3,16 @@
   <div class="category-selection">
     <h2 class="category-title">{{ content.field_label }}</h2>
     <div class="category-buttons" style="display: flex; gap: 2rem; justify-content: center; align-items: center;">
-      <form method="post" action="{{ url_for('step3') }}" class="category-form" style="flex: 1; max-width: 400px;">
+      <form method="post" action="{{ url_for('step3') }}" class="category-form" style="flex: 1; max-width: 350px;">
         <input type="hidden" name="guidance_answer" value="sage" />
-        <button class="category-btn" type="submit" style="width: 100%; min-height: 150px; border: 3px solid; background: transparent; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-          <span class="category-label" style="text-align: center;">I am a sage.</span>
+        <button class="category-btn" type="submit" style="width: 100%; min-height: 80px; border: 3px solid; background: transparent; display: flex; align-items: center; justify-content: center; padding: 1rem 1.5rem;">
+          <span class="category-label" style="text-align: center; font-size: 16px;">I am a sage.</span>
         </button>
       </form>
-      <form method="post" action="{{ url_for('step3') }}" class="category-form" style="flex: 1; max-width: 400px;">
+      <form method="post" action="{{ url_for('step3') }}" class="category-form" style="flex: 1; max-width: 350px;">
         <input type="hidden" name="guidance_answer" value="student" />
-        <button class="category-btn" type="submit" style="width: 100%; min-height: 150px; border: 3px solid; background: transparent; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-          <span class="category-label" style="text-align: center;">I am still a student.</span>
+        <button class="category-btn" type="submit" style="width: 100%; min-height: 80px; border: 3px solid; background: transparent; display: flex; align-items: center; justify-content: center; padding: 1rem 1.5rem;">
+          <span class="category-label" style="text-align: center; font-size: 16px;">I am still a student.</span>
         </button>
       </form>
     </div>

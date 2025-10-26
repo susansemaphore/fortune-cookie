@@ -37,8 +37,7 @@ CONTENT = {
     },
     
     "result": {
-        "title_prefix": "✨ Your Fortune, ",
-        "title_suffix": " ✨",
+        "title": "Take your fortune",
         "button_text": "Ask again",
     },
     

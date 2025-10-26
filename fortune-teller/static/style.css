@@ -12,12 +12,13 @@ body {
   font-family: 'Dogica Pixel', monospace, sans-serif;  /* Custom font with fallbacks */
   padding: 0;
   margin: 0;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;       /* Prevent scrolling and cut-off edges */
 }
 
-/* Frame overlay for 320x1480 screen */
+/* Frame overlay for 1480x320 screen (LANDSCAPE) */
 body::before {
   content: '';
   position: fixed;
@@ -36,10 +37,11 @@ body::before {
 .container {
   position: relative;
   z-index: 1;           /* Content appears below frame */
-  padding: 350px 30px 60px 30px;   /* Move content down into frame */
-  max-width: 320px;     /* Match screen width */
+  padding: 40px 80px;   /* Adjusted for landscape - less vertical, more horizontal */
+  max-width: 1480px;    /* Match screen width */
+  height: 320px;        /* Match screen height */
   margin: 0 auto;
-  min-height: 1480px;   /* Match screen height */
+  overflow: hidden;
 }
 
 .cloud { 
@@ -198,8 +200,8 @@ select option {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%); /* Perfect centering */
-  max-width: 200px;           /* Adjust size as needed */
-  max-height: 200px;
+  max-width: 150px;           /* Smaller for landscape */
+  max-height: 150px;          /* Fits in 320px height */
   z-index: 50;                /* Below text and buttons */
 }
 
@@ -212,31 +214,21 @@ select option {
   z-index: 100;               /* Above content but below frame */
 }
 
-/* Optimized for 320x1480 screen */
-@media (max-width: 320px) {
-  body::before {
-    background-size: 100% 100%;  /* Stretch frame to fill screen */
+/* Optimized for 1480x320 screen (LANDSCAPE) */
+@media (max-height: 320px) {
+  .category-title {
+    font-size: 18px;
+    margin: 0 0 20px 0;
   }
   
-  .container {
-    padding: 330px 20px 50px 20px;  /* Adjust padding for frame */
-    max-width: 280px;
+  .category-icon {
+    width: 100px;
+    height: 100px;
   }
   
-  .form-row {
-    max-width: 240px;
+  .category-buttons {
+    gap: 40px;
   }
-  
-  .centered-content {
-    max-width: 240px;
-  }
-}
-
-/* OPTIONAL: allow wrapping on small screens */
-@media (max-width: 900px) {
-  .form-row { flex-wrap: wrap; }
-  .form-row .field { flex: 1 1 260px; }
-  .form-row .btn { width: 100%; }
 }
 
 /* On-Screen Keyboard Styles */
@@ -315,9 +307,9 @@ select option {
 
 .category-title {
   color: #ec4899;         /* Pink text */
-  font-size: 20px;        /* Match step1 font size */
+  font-size: 18px;        /* Smaller for landscape */
   font-weight: normal;
-  margin: 0 0 50px 0;
+  margin: 0 0 20px 0;     /* Less margin for landscape */
   text-align: center;
   letter-spacing: 1px;
 }
@@ -326,7 +318,7 @@ select option {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 70px;              /* Even more space between category buttons */
+  gap: 50px;              /* Reduced gap for landscape */
 }
 
 .category-form {
@@ -357,8 +349,8 @@ select option {
 }
 
 .category-icon {
-  width: 140px;           /* Even larger icon size */
-  height: 140px;
+  width: 100px;           /* Smaller for landscape to fit in 320px height */
+  height: 100px;
   image-rendering: pixelated;  /* Keep pixel art crisp */
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
