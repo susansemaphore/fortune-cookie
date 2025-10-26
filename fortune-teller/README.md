@@ -145,6 +145,19 @@ The application runs on:
 - Make sure your virtual environment is activated
 - Reinstall dependencies: `pip install -r requirements.txt`
 
+- or use: `python3 -m pip install -r requirements.txt`
+
+
+***Kiosk Mode***
+True kiosk mode (no address bar, no dialogs):
+```
+chromium-browser --kiosk --incognito --noerrdialogs --disable-infobars http://localhost:5001
+```
+
+Exit kiosk by pressing `Alt+F4` (closes the window) or switch TTY with `Ctrl+Alt+F1/F2` if needed.
+
+TODO: remove mouse cursor for touch screen
+
 ## 📝 License
 
 This project is for educational and entertainment purposes.

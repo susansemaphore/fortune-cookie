@@ -1,9 +1,21 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from fortunes import generate_fortune
 from content import get_content
+from arduino_data import (
+    format_for_arduino_json, 
+    format_for_arduino_simple, 
+    format_for_arduino_csv,
+    print_data_summary,
+    get_user_data
+)
+from arduino_serial import init_arduino, get_arduino
 
 app = Flask(__name__)
 app.secret_key = 'fortune-teller-secret-key-change-in-production'
+
+# Initialize Arduino connection on startup
+# Set port=None for auto-detection, or specify like port='/dev/ttyUSB0'
+arduino_connection = init_arduino(port=None, baudrate=9600)
 
 @app.get("/")
 def index():
@@ -38,8 +50,37 @@ def fingerprint_animation():
 
 @app.get("/show-fortune")
 def show_fortune():
+    # Print data summary to console for debugging
+    print_data_summary(session)
+    
+    # Send data to Arduino
+    arduino = get_arduino()
+    if arduino and arduino.is_connected:
+        user_data = get_user_data(session)
+        arduino.send_json(user_data)
+        
+        # Optional: Wait for and log Arduino response
+        response = arduino.read_response()
+        if response:
+            print(f"Arduino acknowledged: {response}")
+    
     content = get_content("result")
     return render_template("result.html", content=content)
+
+@app.get("/api/arduino-data")
+def get_arduino_data():
+    """
+    API endpoint to get user data in various formats for Arduino.
+    Query parameter 'format' can be: json (default), simple, or csv
+    """
+    data_format = request.args.get('format', 'json')
+    
+    if data_format == 'simple':
+        return format_for_arduino_simple(session), 200, {'Content-Type': 'text/plain'}
+    elif data_format == 'csv':
+        return format_for_arduino_csv(session), 200, {'Content-Type': 'text/plain'}
+    else:  # json
+        return format_for_arduino_json(session), 200, {'Content-Type': 'application/json'}
 
 @app.post("/fortune")
 def fortune():
