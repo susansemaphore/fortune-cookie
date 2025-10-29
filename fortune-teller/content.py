@@ -44,16 +44,21 @@ CONTENT = {
     # Love path
     "loveStep1": {
         "step_number": 1,
-        "field_label": "what makes your heart race?",
-        "field_placeholder": "",
-        "button_text": "Continue",
+        "field_label": "Do you have a love interest?",
     },
     
     "loveStep2": {
         "step_number": 2,
-        "field_label": "what makes your heart race?",
-        "field_placeholder": "",
-        "button_text": "Reveal my fortune",
+        "has_feelings": {
+            "field_label": "What is your favourite feature of your love?",
+            "field_prefix": "Their",
+            "field_placeholder": "",
+        },
+        "searching": {
+            "field_label": "Name the feature that you look for in a partner.",
+            "field_prefix": "I'm looking for someone with",
+            "field_placeholder": "",
+        },
     },
     
     # Guidance path
@@ -64,24 +69,36 @@ CONTENT = {
     
     "guidanceStep2": {
         "step_number": 2,
-        "field_label": "What path calls to you?",
-        "field_placeholder": "Tell me...",
-        "button_text": "Reveal my fortune",
+        "sage": {
+            "field_label": "How did you grow to be so wise?",
+            "field_prefix": "I became wise through",
+            "field_placeholder": "",
+        },
+        "student": {
+            "field_label": "What has your greatest teacher been?",
+            "field_prefix": "I gain wisdom from",
+            "field_placeholder": "",
+        },
     },
     
     # Fortune path
     "fortuneStep1": {
         "step_number": 1,
-        "field_label": "What future do you wish to see?",
-        "field_placeholder": "Tell me...",
-        "button_text": "Continue",
+        "field_label": "Do you consider yourself lucky?",
     },
     
     "fortuneStep2": {
         "step_number": 2,
-        "field_label": "What do you hope for?",
-        "field_placeholder": "Tell me...",
-        "button_text": "Reveal my fortune",
+        "lucky": {
+            "field_label": "What is it that makes you so lucky?",
+            "field_prefix": "My luck comes from my",
+            "field_placeholder": "",
+        },
+        "cursed": {
+            "field_label": "What omen would convince you the curse was broken?",
+            "field_prefix": "I would know the curse was broken if I saw a",
+            "field_placeholder": "",
+        },
     },
     
     # Surprise path
@@ -92,9 +109,16 @@ CONTENT = {
     
     "surpriseStep2": {
         "step_number": 2,
-        "field_label": "What mysteries intrigue you?",
-        "field_placeholder": "Tell me...",
-        "button_text": "Reveal my fortune",
+        "has_pet": {
+            "field_label": "What is your pets name?",
+            "field_prefix": "My pets name is",
+            "field_placeholder": "",
+        },
+        "petless": {
+            "field_label": "What manner of beast do you most love?",
+            "field_prefix": "My favourite animal is a",
+            "field_placeholder": "",
+        },
     },
 }
 

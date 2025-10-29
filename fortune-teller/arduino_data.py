@@ -18,15 +18,22 @@ def get_user_data(session_data):
     data = {
         'name': session_data.get('name', ''),
         'category': session_data.get('category', ''),
-        'category_answer': session_data.get('category_answer', ''),
-        # Collect any additional answers from different paths
-        'love_question': session_data.get('love_question', ''),
-        'guidance_answer': session_data.get('guidance_answer', ''),
-        'guidance_question': session_data.get('guidance_question', ''),
-        'fortune_answer': session_data.get('fortune_answer', ''),
-        'fortune_question': session_data.get('fortune_question', ''),
-        'surprise_answer': session_data.get('surprise_answer', ''),
-        'surprise_question': session_data.get('surprise_question', ''),
+        
+        # Love path
+        'love_answer': session_data.get('love_answer', ''),           # Step1 multiple choice
+        'love_question': session_data.get('love_question', ''),       # Step2 text input
+        
+        # Guidance path
+        'guidance_answer': session_data.get('guidance_answer', ''),   # Step1 multiple choice
+        'guidance_question': session_data.get('guidance_question', ''), # Step2 text input
+        
+        # Fortune path
+        'fortune_answer': session_data.get('fortune_answer', ''),     # Step1 multiple choice
+        'fortune_question': session_data.get('fortune_question', ''), # Step2 text input
+        
+        # Surprise path
+        'surprise_answer': session_data.get('surprise_answer', ''),   # Step1 multiple choice
+        'surprise_question': session_data.get('surprise_question', ''), # Step2 text input
     }
     
     # Remove empty values to keep data clean

@@ -39,8 +39,21 @@ def step2():
 
 @app.post("/step3")
 def step3():
-    # Store any answers from the category-specific Step1 pages
-    session['category_answer'] = request.form.get("love_answer") or request.form.get("guidance_answer") or request.form.get("fortune_answer") or request.form.get("surprise_answer")
+    # Store text input from Step2 pages
+    love_q = request.form.get("love_question", "")
+    guidance_q = request.form.get("guidance_question", "")
+    fortune_q = request.form.get("fortune_question", "")
+    surprise_q = request.form.get("surprise_question", "")
+    
+    if love_q:
+        session['love_question'] = love_q
+    if guidance_q:
+        session['guidance_question'] = guidance_q
+    if fortune_q:
+        session['fortune_question'] = fortune_q
+    if surprise_q:
+        session['surprise_question'] = surprise_q
+    
     content = get_content("step3")
     return render_template("step3.html", content=content)
 
@@ -115,8 +128,14 @@ def loveStep1():
 
 @app.post("/loveStep2")
 def loveStep2():
-    session['love_question'] = request.form.get("love_question", "")
-    content = get_content("loveStep2")
+    # Store Step1 multiple choice answer
+    love_answer = request.form.get("love_answer", "")
+    session['love_answer'] = love_answer
+    
+    # Get conditional content based on Step1 answer
+    content_all = get_content("loveStep2")
+    content = content_all.get(love_answer, content_all.get("has_feelings", {}))
+    
     return render_template("loveStep2.html", content=content)
 
 # Guidance path
@@ -127,8 +146,14 @@ def guidanceStep1():
 
 @app.post("/guidanceStep2")
 def guidanceStep2():
-    session['guidance_question'] = request.form.get("guidance_question", "")
-    content = get_content("guidanceStep2")
+    # Store Step1 multiple choice answer
+    guidance_answer = request.form.get("guidance_answer", "")
+    session['guidance_answer'] = guidance_answer
+    
+    # Get conditional content based on Step1 answer
+    content_all = get_content("guidanceStep2")
+    content = content_all.get(guidance_answer, content_all.get("student", {}))
+    
     return render_template("guidanceStep2.html", content=content)
 
 # Fortune path
@@ -139,8 +164,14 @@ def fortuneStep1():
 
 @app.post("/fortuneStep2")
 def fortuneStep2():
-    session['fortune_question'] = request.form.get("fortune_question", "")
-    content = get_content("fortuneStep2")
+    # Store Step1 multiple choice answer
+    fortune_answer = request.form.get("fortune_answer", "")
+    session['fortune_answer'] = fortune_answer
+    
+    # Get conditional content based on Step1 answer
+    content_all = get_content("fortuneStep2")
+    content = content_all.get(fortune_answer, content_all.get("lucky", {}))
+    
     return render_template("fortuneStep2.html", content=content)
 
 # Surprise path
@@ -151,8 +182,14 @@ def surpriseStep1():
 
 @app.post("/surpriseStep2")
 def surpriseStep2():
-    session['surprise_question'] = request.form.get("surprise_question", "")
-    content = get_content("surpriseStep2")
+    # Store Step1 multiple choice answer
+    surprise_answer = request.form.get("surprise_answer", "")
+    session['surprise_answer'] = surprise_answer
+    
+    # Get conditional content based on Step1 answer
+    content_all = get_content("surpriseStep2")
+    content = content_all.get(surprise_answer, content_all.get("has_pet", {}))
+    
     return render_template("surpriseStep2.html", content=content)
 
 if __name__ == "__main__":
