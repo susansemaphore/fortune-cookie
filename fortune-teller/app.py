@@ -77,7 +77,8 @@ def fingerprint_animation():
 @app.get("/show-fortune")
 def show_fortune():
     content = get_content("result")
-    return render_template("result.html", content=content)
+    # Pass session to template so we can access category
+    return render_template("result.html", content=content, session=session)
 
 @app.get("/api/arduino-data")
 def get_arduino_data():

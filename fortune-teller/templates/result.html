@@ -1,7 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 2rem;">
-    <h2 class="category-title" style="text-align: center;">{{ content.title }}</h2>
-    <a class="btn" href="{{ url_for('index') }}">{{ content.button_text }}</a>
+  <div class="category-selection">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 3rem;">
+      <img id="icon-left" src="" alt="" style="width: 150px; height: auto; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;" />
+      <h2 class="category-title" style="text-align: center;">{{ content.title }}</h2>
+      <img id="icon-right" src="" alt="" style="width: 150px; height: auto; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;" />
+    </div>
   </div>
+
+  <script>
+    // Icon animation configuration based on category
+    const iconAnimations = {
+      love: { folder: 'Love_Small_Pink_Loop', frames: 4 },
+      guidance: { folder: 'Guidance_Small_Pink_Loop', frames: 18 },
+      fortune: { folder: 'Fortune_Small_Pink_Loop', frames: 9 },
+      surprise: { folder: 'Surprise_Small_Pink_Loop', frames: 12 }
+    };
+
+    const category = "{{ session.get('category', 'fortune') }}";
+    const config = iconAnimations[category] || iconAnimations.fortune;
+    const FPS = 6;
+    
+    let currentFrame = 0;
+    const iconLeft = document.getElementById('icon-left');
+    const iconRight = document.getElementById('icon-right');
+    const frameDelay = 1000 / FPS;
+    const displayDuration = 10000; // 10 seconds
+    const startTime = Date.now();
+
+    function padNumber(num) {
+      return String(num).padStart(5, '0');
+    }
+
+    function updateFrame() {
+      const framePath = `/static/images/UI Elements/IconLoops/${config.folder}_${padNumber(currentFrame)}.png`;
+      iconLeft.src = framePath;
+      iconRight.src = framePath;
+      
+      currentFrame++;
+      
+      // Loop animation
+      if (currentFrame >= config.frames) {
+        currentFrame = 0;
+      }
+      
+      // Check if 10 seconds have elapsed
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < displayDuration) {
+        setTimeout(updateFrame, frameDelay);
+      } else {
+        // Return to start page after 10 seconds
+        window.location.href = "{{ url_for('index') }}";
+      }
+    }
+
+    // Start animation
+    updateFrame();
+  </script>
 {% endblock %}
