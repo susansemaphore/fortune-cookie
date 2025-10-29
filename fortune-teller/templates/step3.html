@@ -1,11 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="category-selection">
-    <h2 class="category-title" style="text-align: center; margin-top: -80px; margin-bottom: 0;">{{ content.title }}</h2>
-    <div style="display: flex; justify-content: center; margin-top: 6rem;">
-      <form method="post" action="{{ url_for('fingerprint_animation') }}">
-        <button class="btn" type="submit">{{ content.button_text }}</button>
+    <h2 class="category-title" style="text-align: center; margin-top: 120px; margin-bottom: -6rem;">{{ content.title }}</h2>
+    <div style="display: flex; justify-content: center;">
+      <form id="fingerprint-form" method="post" action="{{ url_for('fingerprint_animation') }}">
+        <img id="fingerprint-button" src="" alt="Fingerprint" style="cursor: pointer; width: 2400px; height: auto; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;" />
       </form>
     </div>
   </div>
+
+  <script>
+    // Fingerprint button animation
+    const FRAMES = 15;
+    const FPS = 6;
+    const FOLDER = 'StartTheRitual_Button';
+    
+    let currentFrame = 0;
+    const animImage = document.getElementById('fingerprint-button');
+    const frameDelay = 1000 / FPS;
+
+    function padNumber(num) {
+      return String(num).padStart(5, '0');
+    }
+
+    function updateFrame() {
+      const framePath = `/static/images/UI Elements/${FOLDER}/StartTheRitual_Centre Button_${padNumber(currentFrame)}.png`;
+      animImage.src = framePath;
+      
+      currentFrame++;
+      
+      // Loop back to first frame
+      if (currentFrame >= FRAMES) {
+        currentFrame = 0;
+      }
+      
+      setTimeout(updateFrame, frameDelay);
+    }
+
+    // Make animation clickable - submit form
+    animImage.addEventListener('click', function() {
+      document.getElementById('fingerprint-form').submit();
+    });
+
+    // Start animation
+    updateFrame();
+  </script>
 {% endblock %}

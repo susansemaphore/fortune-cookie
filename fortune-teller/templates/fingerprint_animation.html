@@ -1,14 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-    <h2 class="category-title" style="text-align: center;">[Animation playing]</h2>
+  <div class="animation-container" style="display: flex; align-items: center; justify-content: center; height: 100%; margin-top: -40px;">
+    <img id="ritual-animation" class="animation-image" src="" alt="Start the Ritual" style="width: 2400px; height: auto; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;" />
   </div>
 
   <script>
-    // Redirect to fortune page after 10 seconds
-    setTimeout(function() {
-      window.location.href = "{{ url_for('show_fortune') }}";
-    }, 10000);
+    // Start the Ritual animation configuration
+    const FRAMES = 24;
+    const FPS = 6;
+    const FOLDER = 'StartTheRitual';
+    
+    let currentFrame = 0;
+    const animImage = document.getElementById('ritual-animation');
+    const frameDelay = 1000 / FPS;
+    const animationDuration = 10000; // 10 seconds total
+    const startTime = Date.now();
+
+    function padNumber(num) {
+      return String(num).padStart(5, '0');
+    }
+
+    function updateFrame() {
+      const framePath = `/static/images/UI Elements/${FOLDER}/StartTheRitual_${padNumber(currentFrame)}.png`;
+      animImage.src = framePath;
+      
+      currentFrame++;
+      
+      // Loop back to first frame if we reach the end
+      if (currentFrame >= FRAMES) {
+        currentFrame = 0;
+      }
+      
+      // Check if 10 seconds have elapsed
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < animationDuration) {
+        setTimeout(updateFrame, frameDelay);
+      } else {
+        // Animation duration complete - redirect to fortune page
+        setTimeout(() => {
+          window.location.href = "{{ url_for('show_fortune') }}";
+        }, 200);
+      }
+    }
+
+    // Start animation when page loads
+    updateFrame();
   </script>
 {% endblock %}
 
