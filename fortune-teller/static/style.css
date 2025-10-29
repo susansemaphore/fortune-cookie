@@ -148,7 +148,7 @@ select option {
 .form-row {
   position: fixed;
   top: 50%;
-  left: 20%;              /* Move further left */
+  left: 28%;              /* Moved to the right */
   transform: translate(-50%, -50%);
   display: flex;
   gap: 40px;              /* Increased space between elements */
