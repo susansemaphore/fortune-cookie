@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 2rem;">
-    <h2 class="category-title" style="text-align: center;">{{ content.title }}</h2>
-    <form method="post" action="{{ url_for('fingerprint_animation') }}">
-      <button class="btn" type="submit">{{ content.button_text }}</button>
-    </form>
+  <div class="category-selection">
+    <h2 class="category-title" style="text-align: center; margin-top: -80px; margin-bottom: 0;">{{ content.title }}</h2>
+    <div style="display: flex; justify-content: center; margin-top: 6rem;">
+      <form method="post" action="{{ url_for('fingerprint_animation') }}">
+        <button class="btn" type="submit">{{ content.button_text }}</button>
+      </form>
+    </div>
   </div>
 {% endblock %}
