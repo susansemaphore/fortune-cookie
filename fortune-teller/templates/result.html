@@ -56,5 +56,30 @@
 
     // Start animation
     updateFrame();
+
+    // Play random audio when page loads
+    const audioFiles = [
+      "{{ url_for('static', filename='audio/result/cook_09A.wav') }}",
+      "{{ url_for('static', filename='audio/result/cook_09B.wav') }}",
+      "{{ url_for('static', filename='audio/result/cook_09C.wav') }}",
+      "{{ url_for('static', filename='audio/result/cook_09D.wav') }}",
+      "{{ url_for('static', filename='audio/result/cook_09E.wav') }}"
+    ];
+    
+    const randomIndex = Math.floor(Math.random() * audioFiles.length);
+    const selectedAudio = audioFiles[randomIndex];
+    
+    console.log('Playing random result audio:', selectedAudio);
+    
+    const resultAudio = new Audio(selectedAudio);
+    resultAudio.volume = 1.0;
+    
+    resultAudio.play()
+      .then(() => {
+        console.log('Result audio playing successfully');
+      })
+      .catch(error => {
+        console.error('Audio playback failed:', error);
+      });
   </script>
 {% endblock %}

@@ -137,7 +137,8 @@ def loveStep2():
     content_all = get_content("loveStep2")
     content = content_all.get(love_answer, content_all.get("has_feelings", {}))
     
-    return render_template("loveStep2.html", content=content)
+    # Pass the answer to template for conditional audio
+    return render_template("loveStep2.html", content=content, love_answer=love_answer)
 
 # Guidance path
 @app.route("/guidanceStep1")
@@ -155,7 +156,8 @@ def guidanceStep2():
     content_all = get_content("guidanceStep2")
     content = content_all.get(guidance_answer, content_all.get("student", {}))
     
-    return render_template("guidanceStep2.html", content=content)
+    # Pass the answer to template for conditional audio
+    return render_template("guidanceStep2.html", content=content, guidance_answer=guidance_answer)
 
 # Fortune path
 @app.route("/fortuneStep1")
@@ -173,7 +175,8 @@ def fortuneStep2():
     content_all = get_content("fortuneStep2")
     content = content_all.get(fortune_answer, content_all.get("lucky", {}))
     
-    return render_template("fortuneStep2.html", content=content)
+    # Pass the answer to template for conditional audio
+    return render_template("fortuneStep2.html", content=content, fortune_answer=fortune_answer)
 
 # Surprise path
 @app.route("/surpriseStep1")
@@ -191,7 +194,8 @@ def surpriseStep2():
     content_all = get_content("surpriseStep2")
     content = content_all.get(surprise_answer, content_all.get("has_pet", {}))
     
-    return render_template("surpriseStep2.html", content=content)
+    # Pass the answer to template for conditional audio
+    return render_template("surpriseStep2.html", content=content, surprise_answer=surprise_answer)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)

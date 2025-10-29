@@ -44,5 +44,17 @@
 
     // Start animation
     updateFrame();
+
+    // Play audio when page loads
+    const stepAudio = new Audio("{{ url_for('static', filename='audio/step3/cook_07.wav') }}");
+    stepAudio.volume = 1.0;
+    
+    stepAudio.play()
+      .then(() => {
+        console.log('Step3 audio playing');
+      })
+      .catch(error => {
+        console.error('Audio playback failed:', error);
+      });
   </script>
 {% endblock %}

@@ -45,6 +45,18 @@
 
     // Start animation when page loads
     updateFrame();
+
+    // Play audio when page loads
+    const animAudio = new Audio("{{ url_for('static', filename='audio/fingerprint/cook_08.wav') }}");
+    animAudio.volume = 1.0;
+    
+    animAudio.play()
+      .then(() => {
+        console.log('Fingerprint animation audio playing');
+      })
+      .catch(error => {
+        console.error('Audio playback failed:', error);
+      });
   </script>
 {% endblock %}
 

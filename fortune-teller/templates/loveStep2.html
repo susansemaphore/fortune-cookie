@@ -9,5 +9,30 @@
       </div>
     </label>
   </form>
+
+  <script>
+    // Play conditional audio based on Step1 answer
+    document.addEventListener('DOMContentLoaded', function() {
+      const answer = "{{ love_answer }}";
+      let audioFile;
+      
+      if (answer === "has_feelings") {
+        audioFile = "{{ url_for('static', filename='audio/loveStep2/cook_06_love_A.wav') }}";
+      } else {
+        audioFile = "{{ url_for('static', filename='audio/loveStep2/cook_06_love_B.wav') }}";
+      }
+      
+      const audio = new Audio(audioFile);
+      audio.volume = 1.0;
+      
+      audio.play()
+        .then(() => {
+          console.log('Love Step2 audio playing:', audioFile);
+        })
+        .catch(error => {
+          console.error('Audio playback failed:', error);
+        });
+    });
+  </script>
 {% endblock %}
 

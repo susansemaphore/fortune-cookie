@@ -9,5 +9,30 @@
       </div>
     </label>
   </form>
+
+  <script>
+    // Play conditional audio based on Step1 answer
+    document.addEventListener('DOMContentLoaded', function() {
+      const answer = "{{ fortune_answer }}";
+      let audioFile;
+      
+      if (answer === "lucky") {
+        audioFile = "{{ url_for('static', filename='audio/fortuneStep2/cook_06_fortune_A.wav') }}";
+      } else {
+        audioFile = "{{ url_for('static', filename='audio/fortuneStep2/cook_06_fortune_B.wav') }}";
+      }
+      
+      const audio = new Audio(audioFile);
+      audio.volume = 1.0;
+      
+      audio.play()
+        .then(() => {
+          console.log('Fortune Step2 audio playing:', audioFile);
+        })
+        .catch(error => {
+          console.error('Audio playback failed:', error);
+        });
+    });
+  </script>
 {% endblock %}
 
