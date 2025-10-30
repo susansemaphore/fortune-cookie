@@ -9,6 +9,7 @@ from arduino_data import (
     get_user_data
 )
 from arduino_serial import init_arduino, get_arduino
+from fortune_generator import get_fortune_for_arduino
 
 app = Flask(__name__)
 app.secret_key = 'fortune-teller-secret-key-change-in-production'
@@ -59,13 +60,14 @@ def step3():
 
 @app.post("/fingerprint-animation")
 def fingerprint_animation():
-    # Send data to Arduino when user clicks "Fingerprint" button
-    print_data_summary(session)
+    # Generate fortune message
+    fortune_message = get_fortune_for_arduino(session)
     
+    # Send fortune message to Arduino
     arduino = get_arduino()
     if arduino and arduino.is_connected:
-        user_data = get_user_data(session)
-        arduino.send_json(user_data)
+        # Send the fortune message as a string
+        arduino.send_data(fortune_message)
         
         # Optional: Wait for and log Arduino response
         response = arduino.read_response()
