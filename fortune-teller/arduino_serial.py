@@ -92,7 +92,8 @@ class ArduinoSerial:
     def send_data(self, data_string):
         """
         Send string data to Arduino.
-        Adds newline terminator for Arduino's Serial.readStringUntil().
+        Adds tilde (~) terminator for Arduino's Serial.readStringUntil().
+        Using ~ instead of newline since fortunes may contain \n characters.
         
         Args:
             data_string (str): String to send
@@ -106,8 +107,8 @@ class ArduinoSerial:
             return False
         
         try:
-            # Add newline terminator for Arduino parsing
-            message = data_string + '\n'
+            # Add tilde terminator for Arduino parsing (~ won't appear in fortunes)
+            message = data_string + '~'
             self.serial_connection.write(message.encode('utf-8'))
             self.serial_connection.flush()
             

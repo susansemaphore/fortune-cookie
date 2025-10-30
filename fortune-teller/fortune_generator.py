@@ -78,6 +78,8 @@ def generate_fortune_message(session_data):
     """
     # Extract data from session
     name = session_data.get('name', 'Seeker')
+    # Capitalize first letter of name
+    name = name.capitalize() if name else 'Seeker'
     category = session_data.get('category', 'fortune')
     
     # Get the answer from Step1 (multiple choice)
@@ -101,6 +103,8 @@ def generate_fortune_message(session_data):
         feature = session_data.get('fortune_question', 'positive spirit')
     elif category == 'surprise':
         feature = session_data.get('surprise_question', 'mystery')
+        # Capitalize pet's name
+        feature = feature.capitalize() if feature else 'mystery'
     
     # Get templates for this category and answer
     templates = FORTUNE_TEMPLATES.get(category, {}).get(answer_key, [])
@@ -112,8 +116,11 @@ def generate_fortune_message(session_data):
     # Randomly select a template
     template = random.choice(templates)
     
-    # Replace placeholders
-    fortune = template.format(name=name, feature=feature)
+    # Replace placeholders - add line breaks after custom inputs to prevent word wrapping issues
+    fortune = template.format(name=name + "\n", feature=feature + "\n")
+    
+    # Clean up any double line breaks that might have been created
+    fortune = fortune.replace("\n\n\n", "\n\n")
     
     return fortune
 

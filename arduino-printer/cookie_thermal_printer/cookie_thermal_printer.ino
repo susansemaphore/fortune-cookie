@@ -111,31 +111,58 @@ const int printerRxPin = 2; // Connect this pin to the TX pin of the printer
 const int printerTxPin = 3; // Connect this pin to the RX pin of the printer
  
 SoftwareSerial printerSerial(printerRxPin, printerTxPin);
- 
-void setup() {
-  Serial.begin(9600);
-  printerSerial.begin(9600);
-  delay(500); // Allow time for the printer to initialize
 
-    uint16_t widthBytes = STAR_W / 8;
-  uint16_t height = STAR_H;
- 
-  // Configure printer
+// Function to initialize the printer
+void initializePrinter() {
   printerSerial.write(27); // ESC
   printerSerial.write(64); // @ - Initialize printer
+  
+  delay(50); // Give printer time to initialize
  
+  // Heating parameters - MAXIMUM settings for darkest printing
   printerSerial.write(27); // ESC
   printerSerial.write(55); // 7 - Print settings
-  printerSerial.write(7);  // Heating dots (7 - max heat)
-  printerSerial.write(30); // Print and feed time (30 * 10 microseconds)
-  printerSerial.write(20); // Heating time (20 * 10 microseconds)
-
+  printerSerial.write(20); // Heating dots (20 - MAXIMUM for darkest print)
+  printerSerial.write(255); // Heating time (255 - MAXIMUM)
+  printerSerial.write(250); // Heating interval (250 - very high for maximum darkness)
   
-  // Print text
- 
-  printerSerial.print("The future looks bright!");
-  printerSerial.write("\n");
+  // Set print density to MAXIMUM
+  printerSerial.write(18);  // DC2
+  printerSerial.write(35);  // #
+  printerSerial.write((31 << 4) | 15); // Print density (31 - MAXIMUM) and break time (15)
+  
+  // Enable BOLD/EMPHASIZED mode for even darker text
+  printerSerial.write(27);  // ESC
+  printerSerial.write(69);  // E
+  printerSerial.write(1);   // 1 = Enable bold mode
+  
+  // Enable double-strike mode for maximum darkness
+  printerSerial.write(27);  // ESC
+  printerSerial.write(71);  // G
+  printerSerial.write(1);   // 1 = Enable double-strike
+  
+  // Set line spacing to give more heating time per line
+  printerSerial.write(27);  // ESC
+  printerSerial.write(51);  // 3
+  printerSerial.write(80);  // 80 dots line spacing (gives more time for heat)
+  
+  // Slow down print speed for darker printing
+  // This is critical for darkness - slower = more heat time
+  printerSerial.write((uint8_t)29);  // GS
+  printerSerial.write((uint8_t)40);  // (
+  printerSerial.write((uint8_t)75);  // K - pL
+  printerSerial.write((uint8_t)2);   // pH
+  printerSerial.write((uint8_t)0);   // fn = 48 for setting print speed
+  printerSerial.write((uint8_t)48);  // m = print speed (lower = slower/darker, range 0-255)
+  printerSerial.write((uint8_t)0);   // 0 = slowest/darkest
+  printerSerial.write((uint8_t)0);   // t2 = slowest
+}
 
+// Function to print the star graphic
+void printStarGraphic() {
+  uint16_t widthBytes = STAR_W / 8;
+  uint16_t height = STAR_H;
+  
   printerSerial.write(0x1D);
   printerSerial.write(0x76);
   printerSerial.write(0x30);
@@ -148,17 +175,64 @@ void setup() {
   for (uint16_t i = 0; i < (widthBytes * height); i++) {
     printerSerial.write(pgm_read_byte(&star_outline96x96[i]));
   }
-  
-  printerSerial.write("\n\n\n");
+}
 
+// Function to print the fortune
+void printFortune(String fortuneText) {
+  // Initialize printer
+  initializePrinter();
+  
+  // Print a blank line
+  printerSerial.write("\n");
+  
+  // Print the star graphic
+  printStarGraphic();
+  
+  // Print blank line between star and text
+  printerSerial.write("\n\n");
+  
+  // Print the fortune message
+  printerSerial.print(fortuneText);
+  
+  // Feed paper to cut line
+  printerSerial.write("\n\n\n\n");
+  
+  Serial.println("Fortune printed successfully!");
+}
+ 
+void setup() {
+  Serial.begin(9600);  // USB serial to communicate with Raspberry Pi
+  printerSerial.begin(9600);  // Printer serial
+  delay(500); // Allow time for the printer to initialize
+  
+  Serial.println("Arduino Fortune Printer Ready");
+  Serial.println("Waiting for fortune data from Raspberry Pi...");
+
+  // Print the TEST to thermal printer
+  printFortune("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST");
 }
  
 void loop() {
+  // Check if data is available from Raspberry Pi via USB Serial
+  if (Serial.available() > 0) {
+    // Read the incoming fortune message (terminated by tilde ~)
+    // Using ~ instead of \n because fortunes contain newlines
+    String fortuneMessage = Serial.readStringUntil('~');
+    
+    // Trim whitespace
+    fortuneMessage.trim();
+    
+    if (fortuneMessage.length() > 0) {
 
-  delay(5000);
-  
-
-  
-  
-  // Nothing to do in the loop
+      delay(10000); // delay for the ritual to take place
+      Serial.print("Received fortune: ");
+      Serial.println(fortuneMessage);
+      
+      // Print the fortune to thermal printer
+      printFortune(fortuneMessage);
+      
+      // Send acknowledgment back to Raspberry Pi
+      Serial.println("OK");
+    }
+  }
 }
