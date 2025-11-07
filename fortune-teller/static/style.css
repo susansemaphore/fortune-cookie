@@ -115,12 +115,12 @@ input[type="text"] {
   transition: border-color 0.3s;
 }
 
-.field-name {
+.field-underline {
   position: relative;
   padding-bottom: 24px;
 }
 
-.field-name::after {
+.field-underline::after {
   content: '';
   position: absolute;
   left: 0;
@@ -130,7 +130,7 @@ input[type="text"] {
   background-color: #ec4899;
 }
 
-.field-name .name-input {
+.field-underline .text-input {
   border-bottom: none;
   padding: 6px 0 10px;
   font-size: 20px;

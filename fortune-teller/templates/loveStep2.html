@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
   <form class="cloud form-row" method="post" action="{{ url_for('step3') }}">
-    <label class="field">
+    <label class="field field-underline">
       <span>{{ content.field_label }}</span>
       <div style="display: flex; align-items: center; gap: 15px;">
         <span style="white-space: nowrap;">{{ content.field_prefix }}</span>
-        <input type="text" name="love_question" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
+        <input class="text-input" type="text" name="love_question" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
       </div>
     </label>
   </form>

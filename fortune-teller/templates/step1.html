@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
   <form class="cloud form-row" method="post" action="{{ url_for('step2') }}">
-    <label class="field field-name">
+    <label class="field field-underline">
       <span>{{ content.field_label }}</span>
-      <input class="name-input" type="text" name="name" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
+      <input class="text-input" type="text" name="name" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
     </label>
   </form>
 
