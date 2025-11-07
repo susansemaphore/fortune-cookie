@@ -3,7 +3,7 @@
   <form class="cloud form-row" method="post" action="{{ url_for('step2') }}">
     <label class="field">
       <span>{{ content.field_label }}</span>
-      <input type="text" name="name" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
+      <input class="name-input" type="text" name="name" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
     </label>
   </form>
 
