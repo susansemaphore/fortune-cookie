@@ -131,6 +131,7 @@ input[type="text"] {
 .field-name .name-input {
   border-bottom: none;
   padding-bottom: 0;
+  font-size: 20px;
 }
 
 input[type="text"]:focus {
