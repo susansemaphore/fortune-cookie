@@ -327,6 +327,10 @@ select option {
   z-index: 100;
 }
 
+.ritual-selection {
+  top: 64%;
+}
+
 .category-title {
   color: #ec4899;         /* Pink text */
   font-size: 18px;        /* Smaller for landscape */
@@ -334,6 +338,10 @@ select option {
   margin: 0 0 20px 0;     /* Less margin for landscape */
   text-align: center;
   letter-spacing: 1px;
+}
+
+.ritual-title {
+  margin: 110px 0 16px 0;
 }
 
 .category-buttons {

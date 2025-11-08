@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="category-selection">
-    <h2 class="category-title" style="text-align: center; margin-top: 120px; margin-bottom: -6rem;">{{ content.title }}</h2>
+  <div class="category-selection ritual-selection">
+    <h2 class="category-title ritual-title">{{ content.title }}</h2>
     <div style="display: flex; justify-content: center;">
       <form id="fingerprint-form" method="post" action="{{ url_for('fingerprint_animation') }}">
         <img id="fingerprint-button" src="" alt="Fingerprint" style="cursor: pointer; width: 2400px; height: auto; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;" />
