@@ -219,10 +219,9 @@ void setup() {
   printFortune("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST");
 
   curtainServo.attach(7); // connect servo signal to pin D9
-  Serial.begin(9600);
+
   Serial.println("Type 'o' to open, 'c' to close");
   curtainServo.write(closePos); // start closed
-
 }
  
 void loop() {

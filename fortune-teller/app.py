@@ -29,6 +29,12 @@ def index():
 def step1():
     # Clear session and start the fortune telling flow
     session.clear()
+    
+    # Trigger the physical cabinet/Arduino to open when the experience begins
+    arduino = get_arduino()
+    if arduino and arduino.is_connected:
+        arduino.send_data("open")
+    
     content = get_content("step1")
     return render_template("step1.html", content=content)
 
@@ -78,6 +84,11 @@ def fingerprint_animation():
 
 @app.get("/show-fortune")
 def show_fortune():
+    # Close cabinet once the fortune is ready
+    arduino = get_arduino()
+    if arduino and arduino.is_connected:
+        arduino.send_data("close")
+    
     content = get_content("result")
     # Pass session to template so we can access category
     return render_template("result.html", content=content, session=session)
@@ -100,6 +111,11 @@ def get_arduino_data():
 @app.post("/fortune")
 def fortune():
     session['mood'] = request.form.get("mood", "")
+    
+    # Ensure the cabinet is closed when showing the fortune directly
+    arduino = get_arduino()
+    if arduino and arduino.is_connected:
+        arduino.send_data("close")
     
     name = session.get('name', 'Mystery Seeker').strip()
     birth_month = session.get('birth_month', '').strip()
