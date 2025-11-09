@@ -6,6 +6,8 @@
 
 #include <Servo.h>
 
+#define CANDLE_COMMS 6
+
 Servo curtainServo;
 int openPos = 180;   // angle for fully open curtains
 int closePos = 0;    // angle for fully closed curtains
@@ -215,55 +217,59 @@ void setup() {
   Serial.println("Arduino Fortune Printer Ready");
   Serial.println("Waiting for fortune data from Raspberry Pi...");
 
-  // Print the TEST to thermal printer
-  printFortune("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST");
+  curtainServo.attach(9); // connect servo signal to pin D9
+  delay(200);
 
-  curtainServo.attach(7); // connect servo signal to pin D9
+  pinMode(CANDLE_COMMS, OUTPUT);
+  digitalWrite(CANDLE_COMMS, LOW);
 
-  Serial.println("Type 'o' to open, 'c' to close");
-  curtainServo.write(closePos); // start closed
+  runTestsOnStartup();
 }
- 
+
 void loop() {
 
   // Check if data is available from Raspberry Pi via USB Serial
   if (Serial.available() > 0) {
+    Serial.println("new message");
     // Read the incoming fortune message (terminated by tilde ~)
     // Using ~ instead of \n because fortunes contain newlines
     String fortuneMessage = Serial.readStringUntil('~');
     
-    if (fortuneMessage == 'open') {
+    if (fortuneMessage == "open") {
       Serial.println("Opening curtains...");
       moveServoSmooth(currentPos, openPos);
       currentPos = openPos;
+      Serial.println("Open");
     }
 
-    if (fortuneMessage == 'close') {
+    else if (fortuneMessage == "close") {
       Serial.println("Closing curtains...");
       moveServoSmooth(currentPos, closePos);
       currentPos = closePos;
+      Serial.println("Closed");
     }
-    // Trim whitespace
-    fortuneMessage.trim();
-    
-    if (fortuneMessage.length() > 0) {
 
-      delay(10000); // delay for the ritual to take place
-      Serial.print("Received fortune: ");
-      Serial.println(fortuneMessage);
+    else {
+      // Trim whitespace
+      fortuneMessage.trim();
       
-      // Print the fortune to thermal printer
-      printFortune(fortuneMessage);
-      
-      // Send acknowledgment back to Raspberry Pi
-      Serial.println("OK");
+      if (fortuneMessage.length() > 0) {
+        Serial.print("Candle action start...");
+        digitalWrite(CANDLE_COMMS, HIGH);
+        delay(10000); // delay for the ritual to take place
+        digitalWrite(CANDLE_COMMS, LOW);
+        Serial.print("Received fortune: ");
+        Serial.println(fortuneMessage);
+        
+        // Print the fortune to thermal printer
+        printFortune(fortuneMessage);
+        
+        // Send acknowledgment back to Raspberry Pi
+        Serial.println("OK");
+      }
     }
   }
 }
-
-
-
-
 
 void moveServoSmooth(int start, int end) {
   int step = (end > start) ? 1 : -1;   // direction
@@ -271,4 +277,14 @@ void moveServoSmooth(int start, int end) {
     curtainServo.write(pos);
     delay(20); // adjust for speed (higher = slower)
   }
+}
+
+void runTestsOnStartup(){
+
+  // Print the TEST to thermal printer
+  printFortune("TEST");
+
+  curtainServo.write(openPos); // start closed
+  delay(2000);
+  curtainServo.write(closePos); // start closed
 }

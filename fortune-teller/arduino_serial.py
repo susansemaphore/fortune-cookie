@@ -6,6 +6,7 @@ import serial
 import serial.tools.list_ports
 import json
 import time
+import threading
 from arduino_data import format_for_arduino_json
 
 
@@ -27,6 +28,8 @@ class ArduinoSerial:
         self.timeout = timeout
         self.serial_connection = None
         self.is_connected = False
+        self._reader_thread = None
+        self._stop_reader = threading.Event()
         
     def connect(self):
         """Establish connection to Arduino."""
@@ -55,6 +58,7 @@ class ArduinoSerial:
             time.sleep(2)
             
             self.is_connected = True
+            self._start_reader_thread()
             print(f"✅ CONNECTED to Arduino on {self.port}")
             print("="*70 + "\n")
             return True
@@ -68,6 +72,9 @@ class ArduinoSerial:
     def disconnect(self):
         """Close serial connection."""
         if self.serial_connection and self.serial_connection.is_open:
+            self._stop_reader.set()
+            if self._reader_thread and self._reader_thread.is_alive():
+                self._reader_thread.join(timeout=2)
             self.serial_connection.close()
             self.is_connected = False
             print("🔌 Disconnected from Arduino")
@@ -140,6 +147,36 @@ class ArduinoSerial:
         except Exception as e:
             print(f"❌ Error reading from Arduino: {e}")
             return None
+    
+    def _start_reader_thread(self):
+        """Continuously read and print all Arduino output."""
+        if self._reader_thread and self._reader_thread.is_alive():
+            return
+        
+        self._stop_reader.clear()
+        
+        def _reader():
+            print("👂 Listening for Arduino output...")
+            while not self._stop_reader.is_set() and self.serial_connection and self.serial_connection.is_open:
+                try:
+                    line = self.serial_connection.readline()
+                    if line:
+                        decoded = line.decode('utf-8', errors='replace').strip()
+                        if decoded:
+                            print(f"📥 [Arduino] {decoded}")
+                except serial.SerialException as e:
+                    if not self._stop_reader.is_set():
+                        print(f"❌ Serial read error: {e}")
+                    break
+                except Exception as e:
+                    print(f"❌ Unexpected reader error: {e}")
+                    break
+                finally:
+                    time.sleep(0.01)
+            print("🛑 Stopped listening for Arduino output.")
+        
+        self._reader_thread = threading.Thread(target=_reader, name="ArduinoSerialReader", daemon=True)
+        self._reader_thread.start()
     
     @staticmethod
     def find_arduino_port():
