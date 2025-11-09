@@ -4,6 +4,13 @@
 // 96x96 1-bit outline star bitmap
 #include <avr/pgmspace.h>
 
+#include <Servo.h>
+
+Servo curtainServo;
+int openPos = 180;   // angle for fully open curtains
+int closePos = 0;    // angle for fully closed curtains
+int currentPos = 0;  // track current position
+
 const uint16_t STAR_W = 96;
 const uint16_t STAR_H = 96;
 
@@ -210,15 +217,33 @@ void setup() {
 
   // Print the TEST to thermal printer
   printFortune("TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST");
+
+  curtainServo.attach(7); // connect servo signal to pin D9
+  Serial.begin(9600);
+  Serial.println("Type 'o' to open, 'c' to close");
+  curtainServo.write(closePos); // start closed
+
 }
  
 void loop() {
+
   // Check if data is available from Raspberry Pi via USB Serial
   if (Serial.available() > 0) {
     // Read the incoming fortune message (terminated by tilde ~)
     // Using ~ instead of \n because fortunes contain newlines
     String fortuneMessage = Serial.readStringUntil('~');
     
+    if (fortuneMessage == 'open') {
+      Serial.println("Opening curtains...");
+      moveServoSmooth(currentPos, openPos);
+      currentPos = openPos;
+    }
+
+    if (fortuneMessage == 'close') {
+      Serial.println("Closing curtains...");
+      moveServoSmooth(currentPos, closePos);
+      currentPos = closePos;
+    }
     // Trim whitespace
     fortuneMessage.trim();
     
@@ -234,5 +259,17 @@ void loop() {
       // Send acknowledgment back to Raspberry Pi
       Serial.println("OK");
     }
+  }
+}
+
+
+
+
+
+void moveServoSmooth(int start, int end) {
+  int step = (end > start) ? 1 : -1;   // direction
+  for (int pos = start; pos != end; pos += step) {
+    curtainServo.write(pos);
+    delay(20); // adjust for speed (higher = slower)
   }
 }
