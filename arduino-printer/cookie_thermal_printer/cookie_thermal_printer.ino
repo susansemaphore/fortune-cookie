@@ -151,9 +151,9 @@ void initializePrinter() {
   printerSerial.write(1);   // 1 = Enable double-strike
   
   // Set line spacing to give more heating time per line
-  printerSerial.write(27);  // ESC
-  printerSerial.write(51);  // 3
-  printerSerial.write(80);  // 80 dots line spacing (gives more time for heat)
+  // printerSerial.write(27);  // ESC
+  // printerSerial.write(51);  // 3
+  // printerSerial.write(70);  // 80 dots line spacing (gives more time for heat)
   
   // Slow down print speed for darker printing
   // This is critical for darkness - slower = more heat time
@@ -192,19 +192,20 @@ void printFortune(String fortuneText) {
   initializePrinter();
   
   // Print a blank line
-  printerSerial.write("\n");
+  // printerSerial.write("\n");
   
   // Print the star graphic
   printStarGraphic();
   
   // Print blank line between star and text
-  printerSerial.write("\n\n");
+  // printerSerial.write("\n\n");
   
   // Print the fortune message
   printerSerial.print(fortuneText);
   
   // Feed paper to cut line
-  printerSerial.write("\n\n\n\n");
+  printerSerial.write("\n\n");
+  printerSerial.write("\n\n");
   
   Serial.println("Fortune printed successfully!");
 }
@@ -282,7 +283,7 @@ void moveServoSmooth(int start, int end) {
 void runTestsOnStartup(){
 
   // Print the TEST to thermal printer
-  printFortune("TEST");
+  printFortune("Simon, student of the cosmos,\nyour humble nature will stand \nyou in good course.\nIf you are learning from books \nand spreading good vibes \neverywhere you go,\nyour journey through this life \nwill be truly charmed!");
 
   curtainServo.write(openPos); // start closed
   delay(2000);
