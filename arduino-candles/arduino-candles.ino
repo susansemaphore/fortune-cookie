@@ -1,70 +1,96 @@
+// === Relay Pin Definitions (verified against actual wiring) ===
+#define RELAY_CANDLE_1     8    // Candles 1
+#define RELAY_CANDLE_2     4    // Candles 2
+#define RELAY_CANDLE_3     5    // Candles 3
+#define RELAY_FAIRYLIGHTS_4 3   // Fairy lights
+#define RELAY_DIFFUSERS_8  7    // Diffusers (confirmed!)
+#define RELAY_CRYSTALBALL_7 11  // Crystal ball (confirmed)
+#define COMMS_PIN A2            // Input from Pi or other device
 
-#define RELAY_CANDLE_1 7
-#define RELAY_CANDLE_2 2
-#define RELAY_CANDLE_3 3
-#define RELAY_FAIRYLIGHTS_4 4
-#define RELAY_DIFFUSERS_5 5
-#define RELAY_CRYSTALBALL_6 6
-#define COMMS_PIN A2
 
+// === Setup ===
 void setup() {
-  Serial.begin(9600);     
-  delay(1000);           
+  Serial.begin(9600);
+  delay(1000);
+
   pinMode(RELAY_CANDLE_1, OUTPUT);
   pinMode(RELAY_CANDLE_2, OUTPUT);
   pinMode(RELAY_CANDLE_3, OUTPUT);
   pinMode(RELAY_FAIRYLIGHTS_4, OUTPUT);
-  pinMode(RELAY_DIFFUSERS_5, OUTPUT);
-  pinMode(RELAY_CRYSTALBALL_6, OUTPUT);
+  pinMode(RELAY_DIFFUSERS_8, OUTPUT);
+  pinMode(RELAY_CRYSTALBALL_7, OUTPUT);
   pinMode(COMMS_PIN, INPUT_PULLUP);
+
+  allOff(); // ensure everything starts off
+
+  Serial.println("System ready.");
 }
 
+
+// === Main Loop ===
 void loop() {
 
-  if(digitalRead(COMMS_PIN) == HIGH){
+  // If Pi sends HIGH, run the show
+  if (digitalRead(COMMS_PIN) == HIGH) {
+    Serial.println("Trigger detected.");
     runCandleSequence();
   }
 
-  delay(1000); 
-
+  delay(200); 
 }
 
-void allOff()
-{
+
+// === Helper Functions ===
+void allOff() {
   switchRelay(RELAY_CANDLE_1, "off");
   switchRelay(RELAY_CANDLE_2, "off");
-  switchRelay(RELAY_CANDLE_3, "off"); 
+  switchRelay(RELAY_CANDLE_3, "off");
   switchRelay(RELAY_FAIRYLIGHTS_4, "off");
-  switchRelay(RELAY_DIFFUSERS_5, "off");
-  switchRelay(RELAY_CRYSTALBALL_6, "off");
-  switchRelay(RELAY_CANDLE_3, "off");   // Relay OFF
+  switchRelay(RELAY_DIFFUSERS_8, "off");
+  switchRelay(RELAY_CRYSTALBALL_7, "off");
 }
 
 void switchRelay(int relayPin, String state) {
-  if (state == "on" || state == "ON") {
-    digitalWrite(relayPin, LOW);
-  }
-  if (state == "off" || state == "OFF") {
-    digitalWrite(relayPin, HIGH);
+  if (state == "on") {
+    digitalWrite(relayPin, LOW);   // active LOW
+  } else {
+    digitalWrite(relayPin, HIGH);  // off
   }
 }
 
-void runCandleSequence(){
+
+// === Lighting & Effects Sequence ===
+void runCandleSequence() {
   delay(3000);
+
+  Serial.println("Candles 1 ON");
   switchRelay(RELAY_CANDLE_1, "on");
-  delay(500);  
+  delay(500);
+
+  Serial.println("Candles 2 ON");
   switchRelay(RELAY_CANDLE_2, "on");
-  delay(500);  
+  delay(500);
+
+  Serial.println("Candles 3 ON");
   switchRelay(RELAY_CANDLE_3, "on");
-  delay(500);  
+  delay(500);
+
+  Serial.println("Fairy lights ON");
   switchRelay(RELAY_FAIRYLIGHTS_4, "on");
-  switchRelay(RELAY_CRYSTALBALL_6, "on");
-  delay(500);  
-  switchRelay(RELAY_DIFFUSERS_5, "on");
-  delay(500);  
-  switchRelay(RELAY_DIFFUSERS_5, "off");
-  for (int i = 0 ; i < 10 ; i++)
-  {
+
+  Serial.println("Crystal ball ON");
+  switchRelay(RELAY_CRYSTALBALL_7, "on");
+  delay(500);
+
+  Serial.println("Diffusers ON");
+  switchRelay(RELAY_DIFFUSERS_8, "on");
+  delay(1500);   // give them time to visibly start
+
+  Serial.println("Diffusers OFF");
+  switchRelay(RELAY_DIFFUSERS_8, "off");
+
+  // Flicker fairy lights
+  for (int i = 0; i < 10; i++) {
     switchRelay(RELAY_FAIRYLIGHTS_4, "on");
     delay(100);
     switchRelay(RELAY_FAIRYLIGHTS_4, "off");
@@ -74,4 +100,6 @@ void runCandleSequence(){
 
   delay(3000);
   allOff();
+
+  Serial.println("Sequence complete.");
 }
