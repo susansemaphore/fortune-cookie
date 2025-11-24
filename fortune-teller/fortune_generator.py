@@ -43,7 +43,7 @@ FORTUNE_TEMPLATES = {
             "By the power of {feature}, \nthe odds are forever in your favour, {name}! \nUse your lucky to brighten the lives of one and all!",
         ],
         "cursed": [
-            "Sweet {name}, the tides turn! \nA {feature} will soon present itself to you, \nand with it your luck will change!",
+            "Sweet {name}, the tides turn! \nA {feature} will soon present \nitself to you, \nand with it your luck will \nchange!",
             "Your path has been shrowded \nin shadow {name}, \nbut a {feature} will \nbrighten your journey! \nTill then, when your way gets \ndark, baby, turn your \nlights up high!",
             "Prepare for a twist of \nfate, {name}! \nAny day now a {feature} will cross \nyour path and things will look \nup for you!",
             "Hold tight, {name}! \nYour luck is about to change! \nYour {feature} awaits!",
@@ -117,7 +117,7 @@ def generate_fortune_message(session_data):
     template = random.choice(templates)
     
     # Replace placeholders - add line breaks after custom inputs to prevent word wrapping issues
-    fortune = template.format(name=name + "\n", feature=feature + "\n")
+    fortune = template.format(name=name, feature=feature)
     
     # Clean up any double line breaks that might have been created
     fortune = fortune.replace("\n\n\n", "\n\n")

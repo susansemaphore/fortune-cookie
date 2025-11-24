@@ -32,7 +32,7 @@ CONTENT = {
     
     "step3": {
         "step_number": 3,
-        "title": "Start the ritual",
+        "title": "Touch to start the ritual",
         "button_text": "Fingerprint",
     },
     
