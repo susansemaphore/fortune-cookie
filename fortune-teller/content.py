@@ -50,12 +50,12 @@ CONTENT = {
     "loveStep2": {
         "step_number": 2,
         "has_feelings": {
-            "field_label": "What is your favourite feature of your love?",
+            "field_label": "What is your favourite feature of \nyour love?",
             "field_prefix": "Their",
             "field_placeholder": "",
         },
         "searching": {
-            "field_label": "Name the feature that you look for in a partner.",
+            "field_label": "Name the feature that you look for \nin a partner.",
             "field_prefix": "I'm looking for someone with",
             "field_placeholder": "",
         },
@@ -115,7 +115,7 @@ CONTENT = {
             "field_placeholder": "",
         },
         "petless": {
-            "field_label": "What manner of beast do you most love?",
+            "field_label": "What manner of beast do you \nmost love?",
             "field_prefix": "My favourite animal is a",
             "field_placeholder": "",
         },

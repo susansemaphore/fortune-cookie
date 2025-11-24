@@ -216,4 +216,8 @@ def surpriseStep2():
     return render_template("surpriseStep2.html", content=content, surprise_answer=surprise_answer)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    # Set debug=False for production/kiosk mode
+    # Set debug=True for development
+    import os
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(host="0.0.0.0", port=5001, debug=debug_mode)

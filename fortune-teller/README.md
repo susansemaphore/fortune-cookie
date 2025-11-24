@@ -795,67 +795,169 @@ The application runs on:
 - or use: `python3 -m pip install -r requirements.txt`
 
 
-***Kiosk Mode***
-True kiosk mode (no address bar, no dialogs):
-```
-chromium-browser --kiosk --incognito --noerrdialogs --disable-infobars http://localhost:5001
-```
-
-Exit kiosk by pressing `Alt+F4` (closes the window) or switch TTY with `Ctrl+Alt+F1/F2` if needed.
-
-TODO: remove mouse cursor for touch screen
-
 ## 🚀 Deployment Considerations
 
-### Kiosk Mode Setup
+### Kiosk Mode Setup (Raspberry Pi)
 
-#### Browser Configuration
-**Chromium Full Kiosk Mode** (recommended for Raspberry Pi):
+The Fortune Cookie app includes complete kiosk mode support for Raspberry Pi installations. This provides a full-screen, touch-optimized experience with no visible cursor or browser UI elements.
+
+#### Quick Setup (Recommended)
+
+1. **Run the setup script** (one-time configuration):
+   ```bash
+   cd fortune-teller
+   ./setup-kiosk.sh
+   ```
+   
+   This script will:
+   - Install required packages (unclutter, chromium-browser, etc.)
+   - Configure system settings to prevent screen blanking
+   - Set up a systemd service for auto-start
+   - Optionally enable auto-start on boot
+
+2. **The setup script will ask if you want to:**
+   - Enable auto-start on boot (recommended for kiosks)
+   - Start the kiosk service immediately
+
+#### Manual Setup
+
+If you prefer to set up manually:
+
+1. **Install required packages**:
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y unclutter x11-xserver-utils chromium-browser netcat-openbsd
+   ```
+
+2. **Configure screen settings** (prevents screen blanking):
+   ```bash
+   echo "xset s off" >> ~/.xprofile
+   echo "xset -dpms" >> ~/.xprofile
+   echo "xset s noblank" >> ~/.xprofile
+   chmod +x ~/.xprofile
+   ```
+
+3. **Set up systemd service**:
+   ```bash
+   # Edit the service file with your actual paths
+   sudo nano fortune-cookie-kiosk.service
+   
+   # Copy to systemd directory
+   sudo cp fortune-cookie-kiosk.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   
+   # Enable auto-start on boot
+   sudo systemctl enable fortune-cookie-kiosk.service
+   
+   # Start the service
+   sudo systemctl start fortune-cookie-kiosk.service
+   ```
+
+#### Kiosk Mode Features
+
+The kiosk mode setup provides:
+- ✅ **Full-screen browser** - No address bar, tabs, or browser UI
+- ✅ **Hidden cursor** - Cursor automatically hides (unclutter)
+- ✅ **No screen blanking** - Display stays on
+- ✅ **Auto-start on boot** - App launches automatically when Pi boots
+- ✅ **Auto-restart** - Service automatically restarts if it crashes
+- ✅ **Touch-optimized** - Designed for touchscreen interaction only
+
+#### Managing the Kiosk Service
+
+**Start the kiosk**:
 ```bash
-chromium-browser --kiosk --incognito --noerrdialogs --disable-infobars http://localhost:5001
+sudo systemctl start fortune-cookie-kiosk.service
 ```
 
-**Exit Kiosk**:
-- `Alt+F4` to close window
-- `Ctrl+Alt+F1` or `Ctrl+Alt+F2` to switch TTY
-
-**Hide Mouse Cursor** (for touchscreen):
+**Stop the kiosk**:
 ```bash
-sudo apt-get install unclutter
-unclutter -idle 0 &
+sudo systemctl stop fortune-cookie-kiosk.service
 ```
 
-#### Auto-Start on Boot (Raspberry Pi)
-
-1. **Create autostart script**:
+**Or use the exit script**:
 ```bash
-mkdir -p ~/.config/autostart
-nano ~/.config/autostart/fortune-cookie.desktop
+./exit-kiosk.sh
 ```
 
-2. **Add desktop entry**:
-```ini
-[Desktop Entry]
-Type=Application
-Name=Fortune Cookie
-Exec=/home/pi/start-fortune-cookie.sh
-```
-
-3. **Create startup script**:
+**Check status**:
 ```bash
-nano ~/start-fortune-cookie.sh
-chmod +x ~/start-fortune-cookie.sh
+sudo systemctl status fortune-cookie-kiosk.service
 ```
 
-4. **Script contents**:
+**View logs**:
 ```bash
-#!/bin/bash
-cd /home/pi/Documents/fortune-cookie/fortune-teller
-source .venv/bin/activate
-python app.py &
-sleep 10
-chromium-browser --kiosk --incognito http://localhost:5001
+journalctl -u fortune-cookie-kiosk.service -f
 ```
+
+**Disable auto-start**:
+```bash
+sudo systemctl disable fortune-cookie-kiosk.service
+```
+
+**Enable auto-start**:
+```bash
+sudo systemctl enable fortune-cookie-kiosk.service
+```
+
+#### Exiting Kiosk Mode
+
+If you need to exit kiosk mode while it's running:
+
+1. **Switch to a TTY** (virtual terminal):
+   - Press `Ctrl+Alt+F1` (or F2-F6) to switch to a text console
+   - Log in and run: `sudo systemctl stop fortune-cookie-kiosk.service`
+   - Press `Ctrl+Alt+F7` (or F8) to return to the desktop
+
+2. **SSH into the Pi** (if SSH is enabled):
+   ```bash
+   ssh pi@raspberrypi
+   sudo systemctl stop fortune-cookie-kiosk.service
+   ```
+
+3. **Use the exit script** (if you have terminal access):
+   ```bash
+   ./exit-kiosk.sh
+   ```
+
+#### Manual Kiosk Launch (Testing)
+
+To test kiosk mode without the service:
+
+```bash
+cd fortune-teller
+./start-kiosk.sh
+```
+
+This will:
+- Hide the cursor
+- Start the Flask app
+- Launch Chromium in full kiosk mode
+
+Press `Ctrl+C` in the terminal to stop.
+
+#### Troubleshooting Kiosk Mode
+
+**Cursor still visible?**
+- Make sure `unclutter` is installed: `sudo apt-get install unclutter`
+- Check if unclutter is running: `ps aux | grep unclutter`
+
+**Screen goes blank?**
+- Check `.xprofile` settings: `cat ~/.xprofile`
+- Manually run: `xset s off && xset -dpms && xset s noblank`
+
+**Browser doesn't start?**
+- Check if Flask is running: `curl http://localhost:5001`
+- Check service logs: `journalctl -u fortune-cookie-kiosk.service -n 50`
+
+**Service won't start?**
+- Check service file paths are correct
+- Verify user permissions
+- Check logs: `journalctl -u fortune-cookie-kiosk.service`
+
+**Chromium shows error dialogs?**
+- The startup script includes flags to suppress dialogs
+- Check that all Chromium flags are being applied
 
 ### Production Recommendations
 
