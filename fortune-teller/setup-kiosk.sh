@@ -64,13 +64,46 @@ echo "📝 Setting up systemd service..."
 
 # Get absolute path to service file
 SERVICE_FILE="$SCRIPT_DIR/fortune-cookie-kiosk.service"
-
-# Update service file with correct paths
 USER_HOME=$(eval echo ~$USER)
 FORTUNE_DIR="$SCRIPT_DIR"
-sed -i "s|/home/pi|$USER_HOME|g" "$SERVICE_FILE"
-sed -i "s|/home/pi/Documents/fortune-cookie/fortune-teller|$FORTUNE_DIR|g" "$SERVICE_FILE"
-sed -i "s|User=pi|User=$USER|g" "$SERVICE_FILE"
+
+# Create service file if it doesn't exist
+if [ ! -f "$SERVICE_FILE" ]; then
+    echo "Creating service file..."
+    cat > "$SERVICE_FILE" << EOF
+[Unit]
+Description=Fortune Cookie Kiosk Application
+After=network.target graphical.target
+
+[Service]
+Type=simple
+User=$USER
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=$USER_HOME/.Xauthority
+WorkingDirectory=$FORTUNE_DIR
+ExecStart=$FORTUNE_DIR/start-kiosk.sh
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
+EOF
+    echo "✅ Service file created"
+else
+    # Update service file with correct paths if it exists
+    echo "Updating existing service file with current paths..."
+    sed -i "s|/home/pi|$USER_HOME|g" "$SERVICE_FILE"
+    sed -i "s|/home/pi/Documents/fortune-cookie/fortune-teller|$FORTUNE_DIR|g" "$SERVICE_FILE"
+    sed -i "s|User=pi|User=$USER|g" "$SERVICE_FILE"
+fi
+
+# Verify service file exists before copying
+if [ ! -f "$SERVICE_FILE" ]; then
+    echo "❌ Error: Service file could not be created at $SERVICE_FILE"
+    exit 1
+fi
 
 # Copy service file to systemd directory
 sudo cp "$SERVICE_FILE" /etc/systemd/system/

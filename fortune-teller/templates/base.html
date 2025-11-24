@@ -116,6 +116,45 @@
         document.getElementById('keyboard-container').style.display = 'none';
         activeInput = null;
       }
+
+      // Admin keyboard shortcut to exit kiosk mode
+      // Press Ctrl+Shift+E to exit (requires confirmation)
+      let exitKeyPressed = false;
+      document.addEventListener('keydown', function(e) {
+        // Check for Ctrl+Shift+E
+        if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+          e.preventDefault();
+          
+          if (!exitKeyPressed) {
+            exitKeyPressed = true;
+            const confirmed = confirm('Exit kiosk mode? This will stop the Fortune Cookie service.');
+            if (confirmed) {
+              // Call API endpoint to exit kiosk
+              fetch('/api/exit-kiosk', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    alert('Kiosk mode will exit. The page will close shortly.');
+                    // Close the window after a short delay
+                    setTimeout(() => {
+                      window.close();
+                    }, 2000);
+                  } else {
+                    alert('Error: ' + (data.error || 'Failed to exit kiosk mode'));
+                    exitKeyPressed = false;
+                  }
+                })
+                .catch(error => {
+                  console.error('Error exiting kiosk:', error);
+                  alert('Error exiting kiosk mode. You may need to exit manually via SSH or TTY.');
+                  exitKeyPressed = false;
+                });
+            } else {
+              exitKeyPressed = false;
+            }
+          }
+        }
+      });
     </script>
   </body>
 </html>

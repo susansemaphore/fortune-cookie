@@ -1,0 +1,19 @@
+[Unit]
+Description=Fortune Cookie Kiosk Application
+After=network.target graphical.target
+
+[Service]
+Type=simple
+User=pi
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+WorkingDirectory=/home/pi/Documents/fortune-cookie/fortune-teller
+ExecStart=/home/pi/Documents/fortune-cookie/fortune-teller/start-kiosk.sh
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
+
