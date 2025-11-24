@@ -29,7 +29,8 @@ sudo apt-get install -y \
     unclutter \
     x11-xserver-utils \
     chromium-browser \
-    netcat-openbsd
+    netcat-openbsd \
+    xbindkeys
 
 echo ""
 echo "🔧 Configuring system settings..."
@@ -41,15 +42,22 @@ if [ -f ~/.xprofile ]; then
         echo "xset -dpms" >> ~/.xprofile
         echo "xset s noblank" >> ~/.xprofile
     fi
+    # Start xbindkeys for keyboard shortcuts
+    if ! grep -q "xbindkeys" ~/.xprofile; then
+        echo "xbindkeys &" >> ~/.xprofile
+    fi
 else
     echo "xset s off" > ~/.xprofile
     echo "xset -dpms" >> ~/.xprofile
     echo "xset s noblank" >> ~/.xprofile
+    echo "xbindkeys &" >> ~/.xprofile
 fi
 chmod +x ~/.xprofile
 
-# Make startup script executable
+# Make startup scripts executable
 chmod +x "$SCRIPT_DIR/start-kiosk.sh"
+chmod +x "$SCRIPT_DIR/exit-kiosk.sh"
+chmod +x "$SCRIPT_DIR/stop-kiosk-service.sh"
 
 echo ""
 echo "📝 Setting up systemd service..."
@@ -69,6 +77,56 @@ sudo cp "$SERVICE_FILE" /etc/systemd/system/
 
 # Reload systemd
 sudo systemctl daemon-reload
+
+echo ""
+echo "⌨️  Setting up keyboard shortcut (Ctrl+Shift+E to exit kiosk)..."
+
+# Create xbindkeys configuration for keyboard shortcut
+XBINDKEYS_CONFIG="$HOME/.xbindkeysrc"
+EXIT_SCRIPT="$SCRIPT_DIR/exit-kiosk.sh"
+
+# Create or update xbindkeys config
+if [ -f "$XBINDKEYS_CONFIG" ]; then
+    # Remove old fortune-cookie entries if they exist
+    sed -i '/# Fortune Cookie Kiosk Exit Shortcut/,+2d' "$XBINDKEYS_CONFIG" 2>/dev/null || true
+    echo "" >> "$XBINDKEYS_CONFIG"
+else
+    touch "$XBINDKEYS_CONFIG"
+fi
+
+# Add keyboard shortcut configuration
+# Use exit-kiosk.sh which handles the service stop
+cat >> "$XBINDKEYS_CONFIG" << EOF
+# Fortune Cookie Kiosk Exit Shortcut (Ctrl+Shift+E)
+"$EXIT_SCRIPT"
+  control+shift + e
+EOF
+
+# Kill existing xbindkeys if running
+killall xbindkeys 2>/dev/null || true
+
+# Start xbindkeys
+xbindkeys 2>/dev/null || echo "⚠️  Note: xbindkeys will start on next login"
+
+echo "✅ Keyboard shortcut configured: Ctrl+Shift+E to exit kiosk mode"
+
+# Configure sudo permissions for stop script (optional, for passwordless exit)
+echo ""
+read -p "Configure passwordless sudo for kiosk exit? (Recommended for keyboard shortcut) (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    SUDOERS_ENTRY="$USER ALL=(ALL) NOPASSWD: $EXIT_SCRIPT"
+    SUDOERS_FILE="/etc/sudoers.d/fortune-cookie-kiosk"
+    
+    # Check if entry already exists
+    if sudo grep -q "fortune-cookie-kiosk" /etc/sudoers.d/fortune-cookie-kiosk 2>/dev/null; then
+        echo "Sudo permissions already configured"
+    else
+        echo "$SUDOERS_ENTRY" | sudo tee "$SUDOERS_FILE" > /dev/null
+        sudo chmod 0440 "$SUDOERS_FILE"
+        echo "✅ Passwordless sudo configured for kiosk exit"
+    fi
+fi
 
 echo ""
 echo "✅ Setup complete!"

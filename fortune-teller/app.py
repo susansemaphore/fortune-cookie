@@ -108,6 +108,56 @@ def get_arduino_data():
     else:  # json
         return format_for_arduino_json(session), 200, {'Content-Type': 'application/json'}
 
+@app.post("/api/exit-kiosk")
+def exit_kiosk():
+    """
+    API endpoint to exit kiosk mode.
+    Stops the systemd service that runs the kiosk.
+    Uses a helper script that can be configured with sudo permissions.
+    """
+    import subprocess
+    import os
+    from pathlib import Path
+    
+    try:
+        # Use the helper script to stop the service
+        script_path = Path(__file__).parent / 'stop-kiosk-service.sh'
+        
+        if not script_path.exists():
+            # Fallback to direct systemctl call
+            result = subprocess.run(
+                ['sudo', 'systemctl', 'stop', 'fortune-cookie-kiosk.service'],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+        else:
+            # Use the helper script
+            result = subprocess.run(
+                ['sudo', str(script_path)],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+        
+        if result.returncode == 0:
+            return jsonify({'success': True, 'message': 'Kiosk service stopped'})
+        else:
+            return jsonify({
+                'success': False, 
+                'error': f'Failed to stop service: {result.stderr}'
+            }), 500
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            'success': False,
+            'error': 'Timeout while stopping service'
+        }), 500
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 @app.post("/fortune")
 def fortune():
     session['mood'] = request.form.get("mood", "")

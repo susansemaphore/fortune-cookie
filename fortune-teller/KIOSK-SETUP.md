@@ -56,6 +56,11 @@ Press `Ctrl+C` to stop.
 
 ## Exiting Kiosk Mode
 
+### Keyboard Shortcut (Easiest)
+Press **Ctrl+Shift+E** anywhere in the kiosk to exit. A confirmation dialog will appear.
+
+### Other Methods
+
 1. **SSH into Pi**: `ssh pi@raspberrypi` then `sudo systemctl stop fortune-cookie-kiosk.service`
 2. **Switch TTY**: Press `Ctrl+Alt+F1`, login, then stop service
 3. **Terminal**: Run `./exit-kiosk.sh` if you have terminal access
@@ -65,6 +70,8 @@ Press `Ctrl+C` to stop.
 - `start-kiosk.sh` - Main startup script (hides cursor, starts Flask, launches browser)
 - `setup-kiosk.sh` - One-time setup script
 - `exit-kiosk.sh` - Stop kiosk mode script
+- `stop-kiosk-service.sh` - Helper script for stopping service (used by keyboard shortcut)
+- `setup-keyboard-shortcut.sh` - Optional: Setup keyboard shortcut separately
 - `fortune-cookie-kiosk.service` - Systemd service file
 
 ## What Kiosk Mode Does

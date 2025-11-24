@@ -862,6 +862,7 @@ The kiosk mode setup provides:
 - ✅ **Auto-start on boot** - App launches automatically when Pi boots
 - ✅ **Auto-restart** - Service automatically restarts if it crashes
 - ✅ **Touch-optimized** - Designed for touchscreen interaction only
+- ✅ **Keyboard shortcut exit** - Press **Ctrl+Shift+E** to exit kiosk mode
 
 #### Managing the Kiosk Service
 
@@ -904,18 +905,24 @@ sudo systemctl enable fortune-cookie-kiosk.service
 
 If you need to exit kiosk mode while it's running:
 
-1. **Switch to a TTY** (virtual terminal):
+1. **Keyboard Shortcut** (Easiest - Recommended):
+   - Press **Ctrl+Shift+E** anywhere in the kiosk
+   - A confirmation dialog will appear
+   - Confirm to exit kiosk mode
+   - The browser will close and the service will stop
+
+2. **Switch to a TTY** (virtual terminal):
    - Press `Ctrl+Alt+F1` (or F2-F6) to switch to a text console
    - Log in and run: `sudo systemctl stop fortune-cookie-kiosk.service`
    - Press `Ctrl+Alt+F7` (or F8) to return to the desktop
 
-2. **SSH into the Pi** (if SSH is enabled):
+3. **SSH into the Pi** (if SSH is enabled):
    ```bash
    ssh pi@raspberrypi
    sudo systemctl stop fortune-cookie-kiosk.service
    ```
 
-3. **Use the exit script** (if you have terminal access):
+4. **Use the exit script** (if you have terminal access):
    ```bash
    ./exit-kiosk.sh
    ```
