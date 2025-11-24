@@ -95,8 +95,8 @@ CONTENT = {
             "field_placeholder": "",
         },
         "cursed": {
-            "field_label": "What omen would convince you the curse was broken?",
-            "field_prefix": "I would know the curse was broken if I saw a",
+            "field_label": "What omen would convince \nyou the curse was broken?",
+            "field_prefix": "I would know the curse was broken \nif I saw a",
             "field_placeholder": "",
         },
     },
