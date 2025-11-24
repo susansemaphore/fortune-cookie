@@ -945,6 +945,74 @@ Press `Ctrl+C` in the terminal to stop.
 
 #### Troubleshooting Kiosk Mode
 
+**Service won't start or does nothing?**
+
+1. **Check service status and logs**:
+   ```bash
+   # Check service status
+   sudo systemctl status fortune-cookie-kiosk.service
+   
+   # View recent logs
+   journalctl -u fortune-cookie-kiosk.service -n 50 --no-pager
+   
+   # View startup script log
+   tail -n 50 /tmp/fortune-cookie-kiosk.log
+   
+   # Or use the debug script
+   ./debug-service.sh
+   ```
+
+2. **Common issues and fixes**:
+
+   **Service file paths incorrect:**
+   ```bash
+   # Re-run setup to fix paths
+   ./setup-kiosk.sh
+   ```
+
+   **X server not ready:**
+   ```bash
+   # Check if X server is running
+   xset q
+   # If it fails, make sure you're logged into the desktop
+   ```
+
+   **Virtual environment missing:**
+   ```bash
+   # Create virtual environment
+   cd fortune-teller
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+   **Flask not starting:**
+   ```bash
+   # Test Flask manually
+   cd fortune-teller
+   source venv/bin/activate
+   python app.py
+   # Check for errors
+   ```
+
+   **Chromium not found:**
+   ```bash
+   # Install Chromium
+   sudo apt-get install chromium-browser
+   ```
+
+3. **Reload service after fixing issues:**
+   ```bash
+   # Reload systemd
+   sudo systemctl daemon-reload
+   
+   # Restart service
+   sudo systemctl restart fortune-cookie-kiosk.service
+   
+   # Check status again
+   sudo systemctl status fortune-cookie-kiosk.service
+   ```
+
 **Cursor still visible?**
 - Make sure `unclutter` is installed: `sudo apt-get install unclutter`
 - Check if unclutter is running: `ps aux | grep unclutter`
@@ -956,11 +1024,6 @@ Press `Ctrl+C` in the terminal to stop.
 **Browser doesn't start?**
 - Check if Flask is running: `curl http://localhost:5001`
 - Check service logs: `journalctl -u fortune-cookie-kiosk.service -n 50`
-
-**Service won't start?**
-- Check service file paths are correct
-- Verify user permissions
-- Check logs: `journalctl -u fortune-cookie-kiosk.service`
 
 **Chromium shows error dialogs?**
 - The startup script includes flags to suppress dialogs

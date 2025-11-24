@@ -55,9 +55,23 @@ fi
 chmod +x ~/.xprofile
 
 # Make startup scripts executable
+echo "Making scripts executable..."
 chmod +x "$SCRIPT_DIR/start-kiosk.sh"
 chmod +x "$SCRIPT_DIR/exit-kiosk.sh"
 chmod +x "$SCRIPT_DIR/stop-kiosk-service.sh"
+
+# Verify scripts are executable
+if [ ! -x "$SCRIPT_DIR/start-kiosk.sh" ]; then
+    echo "❌ Error: start-kiosk.sh is not executable"
+    exit 1
+fi
+
+# Find bash path (important for systemd)
+BASH_PATH=$(which bash)
+if [ -z "$BASH_PATH" ]; then
+    BASH_PATH="/bin/bash"
+fi
+echo "Using bash at: $BASH_PATH"
 
 echo ""
 echo "📝 Setting up systemd service..."
@@ -70,22 +84,30 @@ FORTUNE_DIR="$SCRIPT_DIR"
 # Create service file if it doesn't exist
 if [ ! -f "$SERVICE_FILE" ]; then
     echo "Creating service file..."
+    # Find bash path for ExecStart
+    BASH_PATH=$(which bash || echo "/bin/bash")
+    
     cat > "$SERVICE_FILE" << EOF
 [Unit]
 Description=Fortune Cookie Kiosk Application
 After=network.target graphical.target
+Wants=graphical.target
 
 [Service]
 Type=simple
 User=$USER
+Group=$USER
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=$USER_HOME/.Xauthority
+Environment=HOME=$USER_HOME
 WorkingDirectory=$FORTUNE_DIR
-ExecStart=$FORTUNE_DIR/start-kiosk.sh
+ExecStart=$BASH_PATH $FORTUNE_DIR/start-kiosk.sh
 Restart=always
 RestartSec=10
 StandardOutput=journal
 StandardError=journal
+# Give the service time to start
+TimeoutStartSec=60
 
 [Install]
 WantedBy=graphical.target
@@ -94,9 +116,14 @@ EOF
 else
     # Update service file with correct paths if it exists
     echo "Updating existing service file with current paths..."
+    BASH_PATH=$(which bash || echo "/bin/bash")
     sed -i "s|/home/pi|$USER_HOME|g" "$SERVICE_FILE"
     sed -i "s|/home/pi/Documents/fortune-cookie/fortune-teller|$FORTUNE_DIR|g" "$SERVICE_FILE"
     sed -i "s|User=pi|User=$USER|g" "$SERVICE_FILE"
+    # Update ExecStart to use full bash path if needed
+    if ! grep -q "^ExecStart=$BASH_PATH" "$SERVICE_FILE"; then
+        sed -i "s|^ExecStart=.*start-kiosk.sh|ExecStart=$BASH_PATH $FORTUNE_DIR/start-kiosk.sh|" "$SERVICE_FILE"
+    fi
 fi
 
 # Verify service file exists before copying
