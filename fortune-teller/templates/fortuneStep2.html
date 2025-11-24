@@ -2,9 +2,9 @@
 {% block content %}
   <form class="cloud form-row" method="post" action="{{ url_for('step3') }}">
     <label class="field field-underline">
-      <span style="white-space: pre-line;">{{ content.field_label|safe }}</span>
-      <div style="display: flex; align-items: center; gap: 15px;">
-        <span style="white-space: pre-line;">{{ content.field_prefix|safe }}</span>
+      <span style="white-space: pre-line; line-height: 1.8;">{{ content.field_label|safe }}</span>
+      <div style="display: flex; flex-direction: column; gap: 15px;">
+        <span style="white-space: pre-line; line-height: 1.8;">{{ content.field_prefix|safe }}</span>
         <input class="text-input" type="text" name="fortune_question" required placeholder="{{ content.field_placeholder }}" autocomplete="off" />
       </div>
     </label>
