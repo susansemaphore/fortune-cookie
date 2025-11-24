@@ -222,7 +222,7 @@ void setup() {
   delay(200);
 
   pinMode(CANDLE_COMMS, OUTPUT);
-  digitalWrite(CANDLE_COMMS, LOW);
+  digitalWrite(CANDLE_COMMS, HIGH);
 
   runTestsOnStartup();
 }
@@ -256,9 +256,9 @@ void loop() {
       
       if (fortuneMessage.length() > 0) {
         Serial.print("Candle action start...");
-        digitalWrite(CANDLE_COMMS, HIGH);
-        delay(10000); // delay for the ritual to take place
         digitalWrite(CANDLE_COMMS, LOW);
+        delay(2000); // delay for the ritual to take place
+        digitalWrite(CANDLE_COMMS, HIGH);
         Serial.print("Received fortune: ");
         Serial.println(fortuneMessage);
         
@@ -288,4 +288,8 @@ void runTestsOnStartup(){
   curtainServo.write(openPos); // start closed
   delay(2000);
   curtainServo.write(closePos); // start closed
+  delay(2000);
+  digitalWrite(CANDLE_COMMS, LOW);
+  delay(2000); // delay for the ritual to take place
+  digitalWrite(CANDLE_COMMS, HIGH);
 }

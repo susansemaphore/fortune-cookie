@@ -5,8 +5,7 @@
 #define RELAY_FAIRYLIGHTS_4 3   // Fairy lights
 #define RELAY_DIFFUSERS_8  7    // Diffusers (confirmed!)
 #define RELAY_CRYSTALBALL_7 11  // Crystal ball (confirmed)
-#define COMMS_PIN A2            // Input from Pi or other device
-
+#define COMMS_PIN A2            // Input from Uno
 
 // === Setup ===
 void setup() {
@@ -23,6 +22,9 @@ void setup() {
 
   allOff(); // ensure everything starts off
 
+  // Serial.println("Running candle sequence once on startup:");
+  // runCandleSequence();
+
   Serial.println("System ready.");
 }
 
@@ -30,8 +32,8 @@ void setup() {
 // === Main Loop ===
 void loop() {
 
-  // If Pi sends HIGH, run the show
-  if (digitalRead(COMMS_PIN) == HIGH) {
+  // If Uno sends LOW, run the show
+  if (digitalRead(COMMS_PIN) == LOW) {
     Serial.println("Trigger detected.");
     runCandleSequence();
   }
