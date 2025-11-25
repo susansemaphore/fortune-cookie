@@ -259,6 +259,7 @@ void loop() {
         digitalWrite(CANDLE_COMMS, LOW);
         delay(2000); // delay for the ritual to take place
         digitalWrite(CANDLE_COMMS, HIGH);
+        delay(9000);
         Serial.print("Received fortune: ");
         Serial.println(fortuneMessage);
         

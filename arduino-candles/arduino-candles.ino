@@ -47,7 +47,7 @@ void allOff() {
   switchRelay(RELAY_CANDLE_1, "off");
   switchRelay(RELAY_CANDLE_2, "off");
   switchRelay(RELAY_CANDLE_3, "off");
-  switchRelay(RELAY_FAIRYLIGHTS_4, "off");
+  switchRelay(RELAY_FAIRYLIGHTS_4, "on");
   switchRelay(RELAY_DIFFUSERS_8, "off");
   switchRelay(RELAY_CRYSTALBALL_7, "off");
 }
@@ -86,13 +86,13 @@ void runCandleSequence() {
 
   Serial.println("Diffusers ON");
   switchRelay(RELAY_DIFFUSERS_8, "on");
-  delay(1500);   // give them time to visibly start
+  delay(3000);   // give them time to visibly start
 
   Serial.println("Diffusers OFF");
   switchRelay(RELAY_DIFFUSERS_8, "off");
 
   // Flicker fairy lights
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 12; i++) {
     switchRelay(RELAY_FAIRYLIGHTS_4, "on");
     delay(100);
     switchRelay(RELAY_FAIRYLIGHTS_4, "off");
