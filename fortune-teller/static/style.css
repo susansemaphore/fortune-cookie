@@ -346,8 +346,8 @@ select option {
 }
 
 .ritual-animation {
-  position: absolute;
-  top: 50%;
+  position: fixed;
+  top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -355,10 +355,10 @@ select option {
 }
 
 .ritual-title {
-  position: absolute;
-  top: calc(50% + 140px);
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
   margin: 0;
 }
 
